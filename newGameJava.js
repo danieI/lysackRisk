@@ -102,22 +102,6 @@ function newGame(){
     })
     .then(() => {
       alert(players.length + " players");
-      var tempNum = 0;
-      if(confirm("backdoor cheat?")){
-        countryList.forEach(x => {
-          x.whoOwns = players[tempNum % players.length].player;
-          tempNum += 1;
-          setUpCountry(x);
-        });
-        update();
-        return new Promise(resolve => {
-          for (var i = 0; i< 10000000; i++){
-            if (i == 9999999){
-              resolve();
-            }
-          }
-        });
-      }
       return createCountries(players)
     })
     .then(() => {
