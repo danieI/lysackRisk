@@ -1,0 +1,80 @@
+button {
+  position: absolute;
+  border-radius: 2px;
+  font-size: 10px;
+  height: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-color: black;
+  border-width: 1px;
+  font-family: "Segoe UI Historic";
+  font-weight: bold;
+}
+
+button:hover{
+  background-color: black;
+  color: white;
+}
+
+
+button[class$="green"] {
+  background-color: #59bd7a;
+}
+button[class$="green"]:hover{
+  color: #59bd7a;
+  background-color: black;
+}
+
+button[class$="red"]{
+  background-color: #ff392e;
+}
+button[class$="red"]:hover{
+  color:#ff3d0d;
+  background-color: black;
+}
+
+button[class$="yellow"]{
+  background-color: #ffdf5e;
+}
+
+button[class$="yellow"]:hover{
+  color: #ffdf5e;
+  background-color: black;
+}
+button[class$="blue"]{
+  background-color: cadetBlue;
+}
+button[class$="blue"]:hover{
+  color: cadetBlue;
+  background-color: black;
+}
+
+button[class$="purple"]{
+  background-color: #dda0dd;
+}
+button[class$="purple"]:hover{
+  color: #dda0dd;
+  background-color: black;
+}
+
+button[class$="white"]{
+  background-color: #f9f7ef;
+}
+button[class$="white"]:hover{
+  color: white;
+  background-color: black;
+}
+
+button[class^="x"]{
+  background-color: silver;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+  background: #000
+}
