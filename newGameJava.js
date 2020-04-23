@@ -338,7 +338,8 @@ pubnub.addListener({
   message: function(event) {
     if (event.message.sender != uuid && JSON.parse(event.message.content).countries != null) {//JSON.parse(event.message.content).password == game.password ??
       console.log("updateCountries");
-      var countries = JSON.parse(event.message.content).countries;
+      var data = JSON.parse(event.message.content)
+      var countries = data.countries;
       countries.forEach(x => {
         countryList[countryNames.indexOf(x.name)] = x;
         setUpCountry(x);
