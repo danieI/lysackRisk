@@ -113,6 +113,7 @@ function newGame(){
       pubnub.createSpace({id:String(createdGame.password),name:"risk",custom:{data:JSON.stringify(createdGame)},include:{customFields: true}})
         .then(response => {
           console.log(response);
+          alert("The game code is " + createdGame.password);
           loadGame();
         })
         .catch(response => {
@@ -124,7 +125,7 @@ function newGame(){
 
 
 
-function createPlayers(){ // Eventually make this on a button click to facilitate online
+function createPlayers(){
   return new Promise(resolve => {
     function getPlayerCode(){
       var code = "1";
@@ -246,7 +247,7 @@ function placeReinforcements(players){
           countryList[index].troops -= numToPlace;
           numTroops[troopIndex] += numToPlace;
           setUpCountry(countryList[index]);
-          update2([countryList[index]]);                                                                                   //pass this reinfocementdata and the done array!!!!!!!
+          update2([countryList[index]]);
         } else {
           alert("Invalid troop number");
         }

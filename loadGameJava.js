@@ -47,6 +47,7 @@ function saveGame(){
   }, function(status, response) {
       //handle error
   });
+  pubnub.updateSpace({id:String(game.password), name:"risk",custom:{data:JSON.stringify(game)}});
 }
 
 function setUpCountry(country){
@@ -733,7 +734,7 @@ window.addEventListener("beforeunload", function(e){
   if(myTurn){
     game.turn += 1;
   }
-  pubnub.updateSpace({id:game.password, name:"risk",custom:{data:JSON.stringify(game)}});
+  pubnub.updateSpace({id:String(game.password), name:"risk",custom:{data:JSON.stringify(game)}});
   e.preventDefault();
   e.returnValue = "";
 });
@@ -754,6 +755,7 @@ window.addEventListener("beforeunload", function(e){
     message: function(event) {
       if (JSON.parse(event.message.content).password == game.password && event.message.sender != uuid) {
         game = JSON.parse(event.message.content);
+        console.log(game);
         game.countries.forEach(x => {
           setUpCountry(x);
         });
