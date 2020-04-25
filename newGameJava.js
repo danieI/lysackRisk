@@ -36,22 +36,31 @@ function Player(code, player, cannon, horse, infantry){
   this.code = code;
 }
 
-function update2(countries){
+function update(countries, selecting){
   pubnub.publish({
     channel: "pubnub_onboarding_channel",
-    message: {"sender": uuid, "content":JSON.stringify({countries:countries,done:done, numTroops: numTroops})}
+    message: {"sender": uuid, "content":JSON.stringify({countries:countries,done:done, numTroops: numTroops, selecting:selecting})}
   }, function(status, response) {
       //handle error
   });
 }
 
-function update(){
-  pubnub.publish({
-    channel: "pubnub_onboarding_channel",
-    message: {"sender": uuid, "content":JSON.stringify({countries:countryList})}
-  }, function(status, response) {
-      //handle error
-  });
+
+
+function addInfo(text){
+  var p = document.createElement("p");
+  p.className = "info";
+  p.style.marginLeft = "10px";
+  p.innerHTML = text;
+  document.getElementById("info").appendChild(p);
+  var elements = document.getElementsByClassName("info");
+  if(elements.length > 5){
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+}
+
+function addInstructions(text){
+  document.getElementById("instructions").innerHTML = text;
 }
 
 
@@ -61,14 +70,25 @@ function setUpCountry(country){
     if(x.name == country.name){
       i = index;
     }
-  })
+  });
+  if(document.getElementById(country.name).className != country.whoOwns){
+    addInfo(country.whoOwns + " chose " + country.name);
+  }
+  var text = document.getElementById(country.name).innerHTML;
+  text = text.substring(text.indexOf(" ") + 1, 200);
+  var troops = Number(text.substring(0, text.indexOf(" ")));
+  if (troops < country.troops) {
+    addInfo(country.whoOwns + " added " + (country.troops - troops) + " troops to " + country.name);
+  } else if (troops > country.troops){
+    addInfo(country.whoOwns + " removed " + (troops - country.troops) + " troops from " + country.name);
+  }
   document.getElementById(country.name).className = country.whoOwns;
   var countryName = country.name;
   var firstLetter = countryName.slice(0,1);
   firstLetter = firstLetter.toUpperCase();
   countryName = firstLetter + countryName.slice(1);
   var playerLetter = country.whoOwns.slice(0,1).toUpperCase();
-  document.getElementById(country.name).innerHTML = " " + countryName + " " + country.troops + " " + playerLetter;
+  document.getElementById(country.name).innerHTML = countryName + " " + country.troops + " " + playerLetter;
   countryList[i] = country;
 }
 
@@ -97,11 +117,9 @@ function newGame(){
   testPass()
     .then(() => {
       //pubnub.createSpace({id:String(password),name:"risk",custom:{data:"temp"}})
-      alert("Password is " + password);
       return createPlayers()
     })
     .then(() => {
-      alert(players.length + " players");
       return createCountries(players)
     })
     .then(() => {
@@ -127,6 +145,7 @@ function newGame(){
 
 function createPlayers(){
   return new Promise(resolve => {
+    addInstructions("If you haven't joined the game yet click 'Add Player'\nOtherwise wait untill all players have been added then click 'Start Game'");
     function getPlayerCode(){
       var code = "1";
       var playerCodes = [];
@@ -164,25 +183,33 @@ function createPlayers(){
         var playerCode;
         let playerOne = new Player(getPlayerCode(), getPlayerColor(), 0,0,0);
         players.push(playerOne);
+        document.getElementById("gameCode").innerHTML = "Game code: " + password;
+        addInfo("Player " + players[players.length - 1].player + " has joined the game")
         pubnub.publish({
           channel: "pubnub_onboarding_channel",
           message: {"sender": uuid, "content":JSON.stringify({players:players,potential: potentialPlayers,pass:password})}
         }, function(status, response) {
             //handle error
         });
-        if (confirm("There are " + players.length + " players in the\ngame right now. Are you done adding players?")){
-          document.getElementById("addPlayer").removeEventListener("click", createNewPlayer);
-          pubnub.publish({
-            channel: "pubnub_onboarding_channel",
-            message: {"sender": uuid, "content":JSON.stringify({data:"doneNewPlayers"})}
-          }, function(status, response) {
-              //handle error
-          });
-          resolve();
-        }
+
+      }
+    }
+
+    function doneAdding(){
+      if (confirm("There are " + players.length + " players in the\ngame right now. Are you done adding players?")){
+        document.getElementById("addPlayer").removeEventListener("click", createNewPlayer);
+        document.getElementById("doneAdding").removeEventListener("click",doneAdding);
+        pubnub.publish({
+          channel: "pubnub_onboarding_channel",
+          message: {"sender": uuid, "content":JSON.stringify({data:"doneNewPlayers"})}
+        }, function(status, response) {
+            //handle error
+        });
+        resolve();
       }
     }
     document.getElementById("addPlayer").addEventListener("click", createNewPlayer);
+    document.getElementById("doneAdding").addEventListener("click",doneAdding);
   });
 }
 
@@ -190,6 +217,7 @@ function createPlayers(){
 
 function placeReinforcements(players){
   return new Promise((resolve) => {
+    addInstructions("All Players place reinforcements in chosen countries");
     var num = players.length;
     numTroops.length = players.length;
     switch (num) {
@@ -226,6 +254,7 @@ function placeReinforcements(players){
     }
     function addPlayerClick(){
       if (playerNames.indexOf(event.target.className) == playerCodes.indexOf(Number(prompt("Enter your player code")))){
+        var player = players[playerNames.indexOf(event.target.className)];
         var index = countryNames.indexOf(event.target.id);
         var troopIndex = playerNames.indexOf(event.target.className);
         var possibleInputs = ["add", "remove"];
@@ -242,18 +271,17 @@ function placeReinforcements(players){
           countryList[index].troops += numToPlace;
           numTroops[troopIndex] -= numToPlace;
           setUpCountry(countryList[index]);
-          update2([countryList[index]]);
+          update([countryList[index]], false);
         } else if (action == "remove" && numToPlace <= countryList[index].troops && numToPlace >=0) {
           countryList[index].troops -= numToPlace;
           numTroops[troopIndex] += numToPlace;
           setUpCountry(countryList[index]);
-          update2([countryList[index]]);
+          update([countryList[index]], false);
         } else {
-          alert("Invalid troop number");
+          addInformation("Invalid troop number");
         }
         if (numTroops[troopIndex] == 0){
           done[troopIndex] = confirm("Are you done placing your troops?");
-          update2(countryList);
         }
         if (JSON.stringify(done) == JSON.stringify(doneCheck)){
           countryList.forEach(x=> {
@@ -274,6 +302,7 @@ function placeReinforcements(players){
 function createCountries(players){
   return new Promise((resolve, reject) => {
     var player = players[playerNum % players.length];
+    addInstructions(players[playerNum%players.length].player + "'s turn to choose a country");
     var countryNameList = [];
     for (var i = 0; i < countryList.length; i++){
       countryNameList.push(countryList[i].name);
@@ -287,8 +316,9 @@ function createCountries(players){
           var ind = countryNameList.indexOf(event.target.id);
           countryList[ind].whoOwns = player.player;
           setUpCountry(countryList[ind]);
-          update();
+          update([countryList[ind]], true);
           playerNum += 1;
+          addInstructions(players[playerNum%players.length].player + "'s turn to choose a country");
           player = players[playerNum % players.length];
           if (playerNum == countryList.length){
             countryList.forEach(x => {
@@ -345,12 +375,13 @@ pubnub.addListener({
         countryList[countryNames.indexOf(x.name)] = x;
         setUpCountry(x);
       });
-      if(data.done != null){
+      if(!data.selecting){
         console.log("updateReinforcements")
         done = data.done;
         numTroops = data.numTroops;
       } else {
         playerNum += 1;
+        addInstructions(players[playerNum%players.length].player + "'s turn to choose a country");
       }
     //  localStorage.setItem(game.password, JSON.stringify(game));
   } else if(event.message.sender != uuid && JSON.parse(event.message.content).players != null){
@@ -358,7 +389,8 @@ pubnub.addListener({
       players = data.players;
       potentialPlayers = data.potential;
       password = data.pass;
-      alert("Player " + players[players.length - 1].player + " has joined the game\ngame code = " + password);
+      document.getElementById("gameCode").innerHTML = "Game code: " + password;
+      addInfo("Player " + players[players.length - 1].player + " has joined the game");
     }
   }
 });
