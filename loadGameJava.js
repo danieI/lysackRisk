@@ -317,7 +317,6 @@ async function playerTurn(player){
       if (attackingCountry != false){
         cssEffect(countries, player, true);
       }
-      var countriesUpdated = countries;
       countries.forEach(country => {
         document.getElementById(country.name).addEventListener("click", reinforcementClick);
       });
@@ -728,6 +727,9 @@ async function playerTurn(player){
               }
 
 
+            } else {
+              document.getElementById(event.target.id).addEventListener("click", attackCountry, {once:true});
+
             }
           }
 
@@ -816,12 +818,12 @@ async function playerTurn(player){
       var form = document.getElementById("myForm");
 
       function eventListener(event) {
-        var data = new FormData(form);
-        var output = "";
-        for (const entry of data) {
-          resolve(entry[1]);
-        };
-        event.preventDefault();
+        var radios = [document.getElementById("1ofEach"), document.getElementById("3Infantry"), document.getElementById("3Horse"), document.getElementById("3Cannon"), document.getElementById("esc")];
+        radios.forEach(r => {
+          if (r.checked == true){
+            resolve(r.value);
+          }
+        });
       }
 
       document.getElementById("formSubmit").addEventListener("click", eventListener, {once:true});
@@ -897,6 +899,11 @@ async function turnListener(){
   });
 
   game.players = tempPlayers;
+  var cheated = localStorage.getItem("iCheatedAtRisk");
+  if(cheated == "true" && loaded){
+    game.turn += 1;
+    saveGame();
+  }
   if(!loaded){
     saveGame();
     if (game.players[(game.turn - 1) % game.players.length].code == constPlayer.code){
@@ -975,15 +982,17 @@ async function loadGame(){
 
 
 window.onLoad = setTimeout(loadGame, 500);
-window.addEventListener("beforeunload", async function(e){
+
+window.addEventListener("beforeunload", function(e){
   if(myTurn){
-    game.turn += 1;
-    saveGame();
-    await pubnub.updateSpace({id:String(game.password), name:"risk",custom:{data:JSON.stringify(game)}});
+    localStorage.setItem("iCheatedAtRisk", "true");
+  } else {
+    localStorage.setItem("iCheatedAtRisk", "false");
   }
   e.preventDefault();
-  e.returnValue = "";
+  e.returnValue = "This will skip your turn";
 });
+
 
   const user = JSON.parse(localStorage.getItem("pubnubUser"));
   const uuid = user.id;
@@ -1016,6 +1025,7 @@ window.addEventListener("beforeunload", async function(e){
             document.getElementById(String(num)).className = "";
           }
         });
+        awardHorseIndex = awardHorseValues.indexOf(game.awardHorse);
         if(game.players[game.turn%game.players.length].player == constPlayer.player){
           pubnub.updateSpace({id:String(game.password), name:"risk",custom:{data:JSON.stringify(game)}});
           addInstructions("YOUR Turn. Click 'Start Turn' to begin");

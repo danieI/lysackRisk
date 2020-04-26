@@ -263,7 +263,7 @@ async function newGame(){
 
 
 
-function createPlayers(){          
+function createPlayers(){
   return new Promise(async (resolve) => {
     console.log("insideNewPlayers");
 
@@ -351,7 +351,7 @@ function placeReinforcements(players){
     numTroops.length = players.length;
     switch (num) {
       case 2:
-        numTroops = numTroops.fill(40);
+        numTroops = numTroops.fill(70);
         break;
       case 3:
         numTroops = numTroops.fill(35);
@@ -539,7 +539,7 @@ pubnub.addListener({
       potentialPlayers.splice(potentialPlayers.indexOf(data.player.player), 1);
       // document.getElementById("gameCode").innerHTML = "Game code: " + password;
       addInfo("Player " + players[players.length - 1].player + " has joined the game");
-    } else if(event.message.content.data == "openLoadGame" && event.message.sender != uuid){
+    } else if(JSON.parse(event.message.content).data == "openLoadGame" && event.message.sender != uuid){
       localStorage.setItem("riskLoadGameCode", String(password));
       window.open("loadGame.html");
       setTimeout(() => window.close(), 500);
