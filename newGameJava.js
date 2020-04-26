@@ -56,8 +56,10 @@ function confirmBox(text){
       document.getElementById("inputFalse").removeEventListener("click", falseClick);
       document.getElementById("confirmBox").hidden = true;
       document.getElementById("inputText").innerHTML = "";
-      document.getElementById("inputDiv").style.border = "";
-      document.getElementById("inputDiv").style.paddingBottom = "10px";
+      if(constPlayer != null){
+        document.getElementById("inputDiv").style.border = "";
+        document.getElementById("inputDiv").style.paddingBottom = "10px";
+      }
       resolve(true);
     }
     function falseClick(){
@@ -65,14 +67,18 @@ function confirmBox(text){
       document.getElementById("inputFalse").removeEventListener("click", falseClick);
       document.getElementById("confirmBox").hidden = true;
       document.getElementById("inputText").innerHTML = "";
-      document.getElementById("inputDiv").style.border = "";
-      document.getElementById("inputDiv").style.paddingBottom = "10px";
+      if(constPlayer != null){
+        document.getElementById("inputDiv").style.border = "";
+        document.getElementById("inputDiv").style.paddingBottom = "10px";
+      }
       resolve(false);
     }
     document.getElementById("confirmBox").hidden = false;
     document.getElementById("inputText").innerHTML = text;
-    document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
-    document.getElementById("inputDiv").style.paddingBottom = "30px";
+    if(constPlayer != null){
+      document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
+      document.getElementById("inputDiv").style.paddingBottom = "30px";
+    }
     document.getElementById("inputTrue").addEventListener("click", trueClick);
     document.getElementById("inputFalse").addEventListener("click", falseClick);
     console.log("eventListener added for confirm");
@@ -87,7 +93,9 @@ function promptBox(text){
       document.getElementById("inputContentSubmit").removeEventListener("click", submitClick);
       document.getElementById("promptBox").hidden = true;
       document.getElementById("inputText").innerHTML = "";
-      document.getElementById("inputDiv").style.border = "";
+      if(constPlayer != null){
+        document.getElementById("inputDiv").style.border = "";
+      }
       var content = document.getElementById("inputContent").value;
       document.getElementById("inputContent").value = "";
       resolve(content);
@@ -98,7 +106,9 @@ function promptBox(text){
         document.removeEventListener("keydown", submitEnter)
         document.getElementById("promptBox").hidden = true;
         document.getElementById("inputText").innerHTML = "";
-        document.getElementById("inputDiv").style.border = "";
+        if(constPlayer != null){
+          document.getElementById("inputDiv").style.border = "";
+        }
         var content = document.getElementById("inputContent").value;
         console.log(content);
         document.getElementById("inputContent").value = "";
@@ -107,7 +117,9 @@ function promptBox(text){
     }
     document.getElementById("promptBox").hidden = false;
     document.getElementById("inputText").innerHTML = text;
-    document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
+    if(constPlayer != null){
+      document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
+    }
     document.getElementById("inputContentSubmit").addEventListener("click", submitClick);
     document.addEventListener("keydown", submitEnter)
   });
