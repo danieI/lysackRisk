@@ -6,6 +6,8 @@ var playerNum = 0;
 var done = [];
 var numTroops = [];
 var playerIndex;
+var firstToLoad = false;
+var inInputBox = false;
 var countryList = JSON.parse('[{"name":"alaska","whoOwns":"","troops":0,"adjascent":["alberta","nwt","kamchatka"]},{"name":"nwt","whoOwns":"","troops":0,"adjascent":["alaska","greenland","alberta","ontario"]},{"name":"greenland","whoOwns":"","troops":0,"adjascent":["quebec","ontario","nwt","iceland"]},{"name":"alberta","whoOwns":"","troops":0,"adjascent":["alaska","nwt","ontario","WesternUS"]},{"name":"ontario","whoOwns":"","troops":0,"adjascent":["alberta","nwt","greenland","quebec","EasternUS","WesternUS"]},{"name":"quebec","whoOwns":"","troops":0,"adjascent":["ontario","greenland","EasternUS"]},{"name":"WesternUS","whoOwns":"","troops":0,"adjascent":["alberta","ontario","EasternUS","centralAmerica"]},{"name":"EasternUS","whoOwns":"","troops":0,"adjascent":["WesternUS","ontario","quebec","centralAmerica"]},{"name":"centralAmerica","whoOwns":"","troops":0,"adjascent":["WesternUS","EasternUS","venezuela"]},{"name":"venezuela","whoOwns":"","troops":0,"adjascent":["centralAmerica","peru","brazil"]},{"name":"peru","whoOwns":"","troops":0,"adjascent":["venezuela","brazil","argentina"]},{"name":"brazil","whoOwns":"","troops":0,"adjascent":["northAfrica","argentina","peru","venezuela"]},{"name":"argentina","whoOwns":"","troops":0,"adjascent":["peru","brazil"]},{"name":"madagascar","whoOwns":"","troops":0,"adjascent":["southAfrica","eastAfrica"]},{"name":"southAfrica","whoOwns":"","troops":0,"adjascent":["madagascar","congo","eastAfrica"]},{"name":"congo","whoOwns":"","troops":0,"adjascent":["northAfrica","eastAfrica","southAfrica"]},{"name":"eastAfrica","whoOwns":"","troops":0,"adjascent":["northAfrica","egypt","congo","madagascar","southAfrica"]},{"name":"northAfrica","whoOwns":"","troops":0,"adjascent":["brazil","westernEurope","southernEurope","egypt","eastAfrica","congo"]},{"name":"egypt","whoOwns":"","troops":0,"adjascent":["northAfrica","southernEurope","middleEast","eastAfrica"]},{"name":"westernEurope","whoOwns":"","troops":0,"adjascent":["greatBritian","northernEurope","southernEurope","northAfrica"]},{"name":"southernEurope","whoOwns":"","troops":0,"adjascent":["westernEurope","northernEurope","ukraine","middleEast","egypt","northAfrica"]},{"name":"northernEurope","whoOwns":"","troops":0,"adjascent":["westernEurope","greatBritian","scandinavia","ukraine","southernEurope"]},{"name":"greatBritian","whoOwns":"","troops":0,"adjascent":["iceland","scandinavia","northernEurope","westernEurope"]},{"name":"iceland","whoOwns":"","troops":0,"adjascent":["greenland","scandinavia","greatBritian"]},{"name":"scandinavia","whoOwns":"","troops":0,"adjascent":["iceland","ukraine","northernEurope","greatBritian"]},{"name":"ukraine","whoOwns":"","troops":0,"adjascent":["scandinavia","ural","afghanistan","middleEast","southernEurope","northernEurope"]},{"name":"westernAustralia","whoOwns":"","troops":0,"adjascent":["indonesia","newGuinea","easternAustralia"]},{"name":"easternAustralia","whoOwns":"","troops":0,"adjascent":["westernAustralia","newGuinea"]},{"name":"newGuinea","whoOwns":"","troops":0,"adjascent":["indonesia","easternAustralia","westernAustralia"]},{"name":"indonesia","whoOwns":"","troops":0,"adjascent":["siam","newGuinea","westernAustralia"]},{"name":"siam","whoOwns":"","troops":0,"adjascent":["india","china","indonesia"]},{"name":"india","whoOwns":"","troops":0,"adjascent":["middleEast","afghanistan","china","siam"]},{"name":"middleEast","whoOwns":"","troops":0,"adjascent":["egypt","southernEurope","ukraine","afghanistan","india"]},{"name":"afghanistan","whoOwns":"","troops":0,"adjascent":["ukraine","ural","china","india","middleEast"]},{"name":"china","whoOwns":"","troops":0,"adjascent":["afghanistan","ural","siberia","mongolia","siam","india"]},{"name":"japan","whoOwns":"","troops":0,"adjascent":["mongolia","kamchatka"]},{"name":"mongolia","whoOwns":"","troops":0,"adjascent":["siberia","irkutsk","kamchatka","japan","china"]},{"name":"siberia","whoOwns":"","troops":0,"adjascent":["ural","yakutsk","irkutsk","mongolia","china"]},{"name":"ural","whoOwns":"","troops":0,"adjascent":["ukraine","siberia","china","afghanistan"]},{"name":"irkutsk","whoOwns":"","troops":0,"adjascent":["siberia","yakutsk","kamchatka","mongolia"]},{"name":"yakutsk","whoOwns":"","troops":0,"adjascent":["siberia","kamchatka","irkutsk"]},{"name":"kamchatka","whoOwns":"","troops":0,"adjascent":["yakutsk","alaska","japan","mongolia","irkutsk"]}]');
 var countryNames = [];
 countryList.forEach(x => {
@@ -60,6 +62,8 @@ function confirmBox(text){
         document.getElementById("inputDiv").style.border = "";
         document.getElementById("inputDiv").style.paddingBottom = "10px";
       }
+      inInputBox = false;
+      document.getElementById("inputFalse").blur();
       resolve(true);
     }
     function falseClick(){
@@ -71,17 +75,23 @@ function confirmBox(text){
         document.getElementById("inputDiv").style.border = "";
         document.getElementById("inputDiv").style.paddingBottom = "10px";
       }
+      inInputBox = false;
+      document.getElementById("inputFalse").blur();
       resolve(false);
     }
+    inInputBox = true;
     document.getElementById("confirmBox").hidden = false;
     document.getElementById("inputText").innerHTML = text;
     if(constPlayer != null){
       document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
       document.getElementById("inputDiv").style.paddingBottom = "30px";
     }
-    document.getElementById("inputTrue").addEventListener("click", trueClick);
-    document.getElementById("inputFalse").addEventListener("click", falseClick);
-    console.log("eventListener added for confirm");
+    document.getElementById("inputFalse").focus();
+    function addLists(){
+      document.getElementById("inputTrue").addEventListener("click", trueClick);
+      document.getElementById("inputFalse").addEventListener("click", falseClick);
+    }
+    setTimeout(addLists, 20);
   });
 }
 
@@ -98,6 +108,8 @@ function promptBox(text){
       }
       var content = document.getElementById("inputContent").value;
       document.getElementById("inputContent").value = "";
+      document.getElementById("inputContent").blur();
+      inInputBox = false;
       resolve(content);
     }
     function submitEnter(event){
@@ -112,14 +124,18 @@ function promptBox(text){
         var content = document.getElementById("inputContent").value;
         console.log(content);
         document.getElementById("inputContent").value = "";
+        document.getElementById("inputContent").blur();
+        inInputBox = false;
         resolve(content);
       }
     }
+    inInputBox = true;
     document.getElementById("promptBox").hidden = false;
     document.getElementById("inputText").innerHTML = text;
     if(constPlayer != null){
       document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
     }
+    document.getElementById("inputContent").focus();
     document.getElementById("inputContentSubmit").addEventListener("click", submitClick);
     document.addEventListener("keydown", submitEnter)
   });
@@ -185,9 +201,10 @@ async function newGame(){
   document.getElementById("instructions").style.padding = "3px 3px 3px 3px";
   addInstructions("Wait untill all players have entered game");
   console.log("v start of newGame");
-  var firstToLoad = localStorage.getItem("amITheFirstPlayer");
+  var firstToLoadText = localStorage.getItem("amITheFirstPlayer");
   console.log(firstToLoad);
-  if(firstToLoad != "yes"){
+  if(firstToLoadText != "yes"){
+    firstToLoad = false;
     var response = await pubnub.getSpace({spaceId: String(password)});
     var responsePotentials = JSON.parse(response.data.custom.data).potentialPlayers;
     players = JSON.parse(response.data.custom.data).newGamePlayers;
@@ -199,7 +216,9 @@ async function newGame(){
       }
     });
     potentialPlayers = responsePotentials;
+    document.getElementById("doneAdding").hidden = true;
   } else {
+    firstToLoad = true;
     localStorage.setItem("amITheFirstPlayer", "");
   }
 
@@ -244,28 +263,10 @@ async function newGame(){
 
 
 
-function createPlayers(){          //////////adjust to haveing a const player variable? Disable unauthorized clicks
+function createPlayers(){          
   return new Promise(async (resolve) => {
     console.log("insideNewPlayers");
-    // async function getPlayerCode(){
-    //   console.log("get player code");
-    //   var code = "bbgf";
-    //   var playerCodes = [];
-    //   for (var i = 0; i < players.length; i++){
-    //     playerCodes.push(players[i].code);
-    //   }
-    //   console.log(code + " code");
-    //   console.log(!(code.length == 4));
-    //   while(!(code.length == 4) || (isNaN(code)) || playerCodes.includes(Number(code))){
-    //     console.log("inside while");
-    //     code = await promptBox("What do you wish your code to be? \n must be 4 digits");
-    //     console.log(code);
-    //     conole.log("code");
-    //   }
-    //   code = Number(code);
-    //   alert("your player code is " + code + " DON'T FORGET IT");
-    //   return code;
-    // }
+
     async function getPlayerColor(){
       return new Promise(async (resolve) => {
         var playerColor = "";
@@ -285,7 +286,6 @@ function createPlayers(){          //////////adjust to haveing a const player va
     pubnub.addListener({
       message: function(event){
           if(JSON.parse(event.message.content).data == "doneNewPlayers" && event.message.sender != uuid){
-            document.getElementById("doneAdding").removeEventListener("click",doneAdding);
             resolve();
           }
       }
@@ -336,7 +336,9 @@ function createPlayers(){          //////////adjust to haveing a const player va
     }
     console.log("should create new player");
     createNewPlayer();
-    document.getElementById("doneAdding").addEventListener("click",doneAdding);
+    if(firstToLoad){
+      document.getElementById("doneAdding").addEventListener("click",doneAdding);
+    }
   });
 }
 
@@ -483,13 +485,13 @@ function createCountries(players){
 function loadGame(){
   localStorage.setItem("riskLoadGameCode", String(password));
   window.open("loadGame.html");
-  setTimeout(() => window.close(), 500);
   pubnub.publish({
     channel: "pubnub_onboarding_channel",
     message: {"sender": uuid, "content":JSON.stringify({data:"openLoadGame"})}
   }, function(status, response) {
       //handle error
   });
+  setTimeout(() => window.close(), 500);
 }
 
 

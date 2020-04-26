@@ -28,12 +28,13 @@ window.onload = function(){
         }
       })
       .catch(err => {
-        if(localStorage.getItem(pass) != null){
+        if(localStorage.getItem(user) != null && JSON.parse(localStorage.getItem(user)).pass == pass){
           var lStorUsr = JSON.parse(localStorage.getItem(pass));
           pubNub.createUser({id:lStorUsr.user, name:lStorUsr.name, custom:{pass:lStorUsr.pass}})
           openSelectionPage(lStorUsr.user, lStorUsr.name, lStorUsr.pass);
+        } else {
+          alert("Invalid login info")
         }
-        alert("Invalid login info")
       });
     document.getElementById("submitLogin").removeEventListener("click", login);
     document.getElementById("submitCreate").removeEventListener("click", create);
@@ -84,7 +85,7 @@ function createPubnub(user){
 }
 
 function openSelectionPage(user, name, pass){
-  localStorage.setItem(pass, JSON.stringify({name:name,user:user,pass:pass}));
+  localStorage.setItem(user, JSON.stringify({name:name,user:user,pass:pass}));
   let newUser = new PlayerUser(user, name, pass);
   localStorage.setItem("pubnubUser", JSON.stringify(newUser));
   window.open("startPage.html");
