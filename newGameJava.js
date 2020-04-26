@@ -183,6 +183,7 @@ async function newGame(){
   document.getElementById("playerTurn").innerHTML = "Welcome " + user.name;
   document.getElementById("instructions").style.border = "thin solid black";
   document.getElementById("instructions").style.padding = "3px 3px 3px 3px";
+  addInstructions("Wait untill all players have entered game");
   console.log("v start of newGame");
   var firstToLoad = localStorage.getItem("amITheFirstPlayer");
   console.log(firstToLoad);
@@ -300,7 +301,6 @@ function createPlayers(){          //////////adjust to haveing a const player va
         constPlayer = playerOne;
         document.getElementById("playerTurn").innerHTML = "Welcome " + user.name + " you are " + constPlayer.player.toUpperCase();
         document.getElementById("instructions").style.border = "thin solid " + constPlayer.player;
-        alert(constPlayer.player);
         players.push(playerOne);
         await pubnub.updateSpace({id:String(password), name:"risk",custom:{data:JSON.stringify({potentialPlayers: potentialPlayers, newGamePlayers: players})},include:{customFields: true}})
           .then(response => {
@@ -483,6 +483,13 @@ function createCountries(players){
 function loadGame(){
   localStorage.setItem("riskLoadGameCode", String(password));
   window.open("loadGame.html");
+  setTimeout(() => window.close(), 500);
+  pubnub.publish({
+    channel: "pubnub_onboarding_channel",
+    message: {"sender": uuid, "content":JSON.stringify({data:"openLoadGame"})}
+  }, function(status, response) {
+      //handle error
+  });
 }
 
 
@@ -530,6 +537,10 @@ pubnub.addListener({
       potentialPlayers.splice(potentialPlayers.indexOf(data.player.player), 1);
       // document.getElementById("gameCode").innerHTML = "Game code: " + password;
       addInfo("Player " + players[players.length - 1].player + " has joined the game");
+    } else if(event.message.content.data == "openLoadGame" && event.message.sender != uuid){
+      localStorage.setItem("riskLoadGameCode", String(password));
+      window.open("loadGame.html");
+      setTimeout(() => window.close(), 500);
     }
   }
 });
