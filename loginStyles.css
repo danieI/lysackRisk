@@ -1,0 +1,26 @@
+.login{
+  width:auto;
+  height: 20px;
+  margin-top:12px;
+  margin-left: 5px;
+}
+
+.field{
+  margin-top:10px;
+  display:flex;
+  /* float:right; */
+  /* align-content: flex-end; */
+  margin-left: auto;
+  margin-right:0;
+  width:60%;
+  right:0px;
+}
+
+.centered{
+  text-align:center;
+}
+
+.submit{
+  width:auto;
+  height:20px;
+}

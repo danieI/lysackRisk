@@ -1,9 +1,11 @@
-var password = 1234;
+const password = localStorage.getItem("riskNewGameCode");
 var players = [];
+var constPlayer;
 var potentialPlayers = ["yellow", "green", "blue", "red", "white", "purple"];
 var playerNum = 0;
 var done = [];
 var numTroops = [];
+var playerIndex;
 var countryList = JSON.parse('[{"name":"alaska","whoOwns":"","troops":0,"adjascent":["alberta","nwt","kamchatka"]},{"name":"nwt","whoOwns":"","troops":0,"adjascent":["alaska","greenland","alberta","ontario"]},{"name":"greenland","whoOwns":"","troops":0,"adjascent":["quebec","ontario","nwt","iceland"]},{"name":"alberta","whoOwns":"","troops":0,"adjascent":["alaska","nwt","ontario","WesternUS"]},{"name":"ontario","whoOwns":"","troops":0,"adjascent":["alberta","nwt","greenland","quebec","EasternUS","WesternUS"]},{"name":"quebec","whoOwns":"","troops":0,"adjascent":["ontario","greenland","EasternUS"]},{"name":"WesternUS","whoOwns":"","troops":0,"adjascent":["alberta","ontario","EasternUS","centralAmerica"]},{"name":"EasternUS","whoOwns":"","troops":0,"adjascent":["WesternUS","ontario","quebec","centralAmerica"]},{"name":"centralAmerica","whoOwns":"","troops":0,"adjascent":["WesternUS","EasternUS","venezuela"]},{"name":"venezuela","whoOwns":"","troops":0,"adjascent":["centralAmerica","peru","brazil"]},{"name":"peru","whoOwns":"","troops":0,"adjascent":["venezuela","brazil","argentina"]},{"name":"brazil","whoOwns":"","troops":0,"adjascent":["northAfrica","argentina","peru","venezuela"]},{"name":"argentina","whoOwns":"","troops":0,"adjascent":["peru","brazil"]},{"name":"madagascar","whoOwns":"","troops":0,"adjascent":["southAfrica","eastAfrica"]},{"name":"southAfrica","whoOwns":"","troops":0,"adjascent":["madagascar","congo","eastAfrica"]},{"name":"congo","whoOwns":"","troops":0,"adjascent":["northAfrica","eastAfrica","southAfrica"]},{"name":"eastAfrica","whoOwns":"","troops":0,"adjascent":["northAfrica","egypt","congo","madagascar","southAfrica"]},{"name":"northAfrica","whoOwns":"","troops":0,"adjascent":["brazil","westernEurope","southernEurope","egypt","eastAfrica","congo"]},{"name":"egypt","whoOwns":"","troops":0,"adjascent":["northAfrica","southernEurope","middleEast","eastAfrica"]},{"name":"westernEurope","whoOwns":"","troops":0,"adjascent":["greatBritian","northernEurope","southernEurope","northAfrica"]},{"name":"southernEurope","whoOwns":"","troops":0,"adjascent":["westernEurope","northernEurope","ukraine","middleEast","egypt","northAfrica"]},{"name":"northernEurope","whoOwns":"","troops":0,"adjascent":["westernEurope","greatBritian","scandinavia","ukraine","southernEurope"]},{"name":"greatBritian","whoOwns":"","troops":0,"adjascent":["iceland","scandinavia","northernEurope","westernEurope"]},{"name":"iceland","whoOwns":"","troops":0,"adjascent":["greenland","scandinavia","greatBritian"]},{"name":"scandinavia","whoOwns":"","troops":0,"adjascent":["iceland","ukraine","northernEurope","greatBritian"]},{"name":"ukraine","whoOwns":"","troops":0,"adjascent":["scandinavia","ural","afghanistan","middleEast","southernEurope","northernEurope"]},{"name":"westernAustralia","whoOwns":"","troops":0,"adjascent":["indonesia","newGuinea","easternAustralia"]},{"name":"easternAustralia","whoOwns":"","troops":0,"adjascent":["westernAustralia","newGuinea"]},{"name":"newGuinea","whoOwns":"","troops":0,"adjascent":["indonesia","easternAustralia","westernAustralia"]},{"name":"indonesia","whoOwns":"","troops":0,"adjascent":["siam","newGuinea","westernAustralia"]},{"name":"siam","whoOwns":"","troops":0,"adjascent":["india","china","indonesia"]},{"name":"india","whoOwns":"","troops":0,"adjascent":["middleEast","afghanistan","china","siam"]},{"name":"middleEast","whoOwns":"","troops":0,"adjascent":["egypt","southernEurope","ukraine","afghanistan","india"]},{"name":"afghanistan","whoOwns":"","troops":0,"adjascent":["ukraine","ural","china","india","middleEast"]},{"name":"china","whoOwns":"","troops":0,"adjascent":["afghanistan","ural","siberia","mongolia","siam","india"]},{"name":"japan","whoOwns":"","troops":0,"adjascent":["mongolia","kamchatka"]},{"name":"mongolia","whoOwns":"","troops":0,"adjascent":["siberia","irkutsk","kamchatka","japan","china"]},{"name":"siberia","whoOwns":"","troops":0,"adjascent":["ural","yakutsk","irkutsk","mongolia","china"]},{"name":"ural","whoOwns":"","troops":0,"adjascent":["ukraine","siberia","china","afghanistan"]},{"name":"irkutsk","whoOwns":"","troops":0,"adjascent":["siberia","yakutsk","kamchatka","mongolia"]},{"name":"yakutsk","whoOwns":"","troops":0,"adjascent":["siberia","kamchatka","irkutsk"]},{"name":"kamchatka","whoOwns":"","troops":0,"adjascent":["yakutsk","alaska","japan","mongolia","irkutsk"]}]');
 var countryNames = [];
 countryList.forEach(x => {
@@ -26,7 +28,7 @@ function Country(name, whoOwns, troops, adjascent){
   this.adjascent = adjascent;
 }
 
-function Player(code, player, cannon, horse, infantry){
+function Player(code, player, cannon, horse, infantry, uuid){
   this.player = player;
   this.cards = {
     cannon,
@@ -34,14 +36,80 @@ function Player(code, player, cannon, horse, infantry){
     infantry
   };
   this.code = code;
+  this.uuid = uuid;
 }
 
-function update(countries, selecting){
+function update(countries, selecting, index){
   pubnub.publish({
     channel: "pubnub_onboarding_channel",
-    message: {"sender": uuid, "content":JSON.stringify({countries:countries,done:done, numTroops: numTroops, selecting:selecting})}
+    message: {"sender": uuid, "content":JSON.stringify({countries:countries,done:done[index], numTroops: numTroops[index], selecting:selecting, index:index})}
   }, function(status, response) {
       //handle error
+  });
+}
+
+
+function confirmBox(text){
+  return new Promise(resolve => {
+    function trueClick(){
+      document.getElementById("inputTrue").removeEventListener("click", trueClick);
+      document.getElementById("inputFalse").removeEventListener("click", falseClick);
+      document.getElementById("confirmBox").hidden = true;
+      document.getElementById("inputText").innerHTML = "";
+      document.getElementById("inputDiv").style.border = "";
+      document.getElementById("inputDiv").style.paddingBottom = "10px";
+      resolve(true);
+    }
+    function falseClick(){
+      document.getElementById("inputTrue").removeEventListener("click", trueClick);
+      document.getElementById("inputFalse").removeEventListener("click", falseClick);
+      document.getElementById("confirmBox").hidden = true;
+      document.getElementById("inputText").innerHTML = "";
+      document.getElementById("inputDiv").style.border = "";
+      document.getElementById("inputDiv").style.paddingBottom = "10px";
+      resolve(false);
+    }
+    document.getElementById("confirmBox").hidden = false;
+    document.getElementById("inputText").innerHTML = text;
+    document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
+    document.getElementById("inputDiv").style.paddingBottom = "30px";
+    document.getElementById("inputTrue").addEventListener("click", trueClick);
+    document.getElementById("inputFalse").addEventListener("click", falseClick);
+    console.log("eventListener added for confirm");
+  });
+}
+
+function promptBox(text){
+  return new Promise(resolve => {
+    console.log("inside promptBox");
+    function submitClick(){
+      console.log("clisk");
+      document.getElementById("inputContentSubmit").removeEventListener("click", submitClick);
+      document.getElementById("promptBox").hidden = true;
+      document.getElementById("inputText").innerHTML = "";
+      document.getElementById("inputDiv").style.border = "";
+      var content = document.getElementById("inputContent").value;
+      document.getElementById("inputContent").value = "";
+      resolve(content);
+    }
+    function submitEnter(event){
+      if(event.code == "Enter"){
+        console.log("enter");
+        document.removeEventListener("keydown", submitEnter)
+        document.getElementById("promptBox").hidden = true;
+        document.getElementById("inputText").innerHTML = "";
+        document.getElementById("inputDiv").style.border = "";
+        var content = document.getElementById("inputContent").value;
+        console.log(content);
+        document.getElementById("inputContent").value = "";
+        resolve(content);
+      }
+    }
+    document.getElementById("promptBox").hidden = false;
+    document.getElementById("inputText").innerHTML = text;
+    document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
+    document.getElementById("inputContentSubmit").addEventListener("click", submitClick);
+    document.addEventListener("keydown", submitEnter)
   });
 }
 
@@ -95,31 +163,51 @@ function setUpCountry(country){
 
 
 
-function newGame(){
-  var uniquePassword = false;
-  function testPass(){
-    return new Promise(resolve => {
-      function extraWrap(){
-        password = (Math.random()) * 10000;
-        password = Number(password.toFixed(0));
-        if (password >1000){
-          pubnub.getSpace({spaceId:String(password)}).then(response => extraWrap())
-            .catch(r => {
-              console.log(password);
-              return resolve();
-            });
-        }
+async function newGame(){
+  console.log("v.v start of new Game");
+  document.getElementById("confirmBox").hidden = true;
+  document.getElementById("promptBox").hidden = true;
+  document.getElementById("gameCode").innerHTML = "Game Code: " + password;
+  document.getElementById("playerTurn").innerHTML = "Welcome " + user.name;
+  document.getElementById("instructions").style.border = "thin solid black";
+  document.getElementById("instructions").style.padding = "3px 3px 3px 3px";
+  console.log("v start of newGame");
+  var firstToLoad = localStorage.getItem("amITheFirstPlayer");
+  console.log(firstToLoad);
+  if(firstToLoad != "yes"){
+    var response = await pubnub.getSpace({spaceId: String(password)});
+    var responsePotentials = JSON.parse(response.data.custom.data).potentialPlayers;
+    players = JSON.parse(response.data.custom.data).newGamePlayers;
+    console.log(players);
+    console.log(responsePotentials);
+    potentialPlayers.forEach(ply => {
+      if(!responsePotentials.includes(ply)){
+        addInfo("Player " + ply + " has joined the game");
       }
-      extraWrap();
     });
+    potentialPlayers = responsePotentials;
+  } else {
+    localStorage.setItem("amITheFirstPlayer", "");
   }
 
-  testPass()
+    createPlayers()
     .then(() => {
-      //pubnub.createSpace({id:String(password),name:"risk",custom:{data:"temp"}})
-      return createPlayers()
-    })
-    .then(() => {
+      console.log("TWO")
+      var sortByCodesValues = [];
+      players.forEach(x => {
+        sortByCodesValues.push(x.code);
+      });
+      sortByCodesValues.sort();
+      var unsortedPlayers = players;
+      var sortedPlayers = [];
+      sortByCodesValues.forEach(code => {
+        players.forEach(x => {
+          if(x.code == code){
+            sortedPlayers.push(x);
+          }
+        });
+      });
+      players = sortedPlayers;
       return createCountries(players)
     })
     .then(() => {
@@ -128,7 +216,7 @@ function newGame(){
     .then(() => {
       let createdGame = new Game(password, countryList, players, 4, 0);
       localStorage.setItem(password, JSON.stringify(createdGame));
-      pubnub.createSpace({id:String(createdGame.password),name:"risk",custom:{data:JSON.stringify(createdGame)},include:{customFields: true}})
+      pubnub.updateSpace({id:String(createdGame.password),name:"risk",custom:{data:JSON.stringify(createdGame)},include:{customFields: true}})
         .then(response => {
           console.log(response);
           alert("The game code is " + createdGame.password);
@@ -143,51 +231,76 @@ function newGame(){
 
 
 
-function createPlayers(){
-  return new Promise(resolve => {
-    addInstructions("If you haven't joined the game yet click 'Add Player'\nOtherwise wait untill all players have been added then click 'Start Game'");
-    function getPlayerCode(){
-      var code = "1";
-      var playerCodes = [];
-      for (var i = 0; i < players.length; i++){
-        playerCodes.push(players[i].code);
-      }
-      while(!(code.length == 4) || (isNaN(code)) || playerCodes.includes(Number(code))){
-        code = prompt("What do you wish your code to be? \n must be 4 digits");
-      }
-      code = Number(code);
-      alert("your player code is " + code + " DON'T FORGET IT");
-      return code;
-    }
-    function getPlayerColor(){
-      var playerColor = "";
-      while(!(potentialPlayers.includes(playerColor.toLowerCase()))){
-        playerColor = prompt("Choose a color between \n" + potentialPlayers);
-      }
-      potentialPlayers.splice(potentialPlayers.indexOf(playerColor), 1);
-      playerColor = playerColor.toLowerCase();
-      return playerColor;
+function createPlayers(){          //////////adjust to haveing a const player variable? Disable unauthorized clicks
+  return new Promise(async (resolve) => {
+    console.log("insideNewPlayers");
+    // async function getPlayerCode(){
+    //   console.log("get player code");
+    //   var code = "bbgf";
+    //   var playerCodes = [];
+    //   for (var i = 0; i < players.length; i++){
+    //     playerCodes.push(players[i].code);
+    //   }
+    //   console.log(code + " code");
+    //   console.log(!(code.length == 4));
+    //   while(!(code.length == 4) || (isNaN(code)) || playerCodes.includes(Number(code))){
+    //     console.log("inside while");
+    //     code = await promptBox("What do you wish your code to be? \n must be 4 digits");
+    //     console.log(code);
+    //     conole.log("code");
+    //   }
+    //   code = Number(code);
+    //   alert("your player code is " + code + " DON'T FORGET IT");
+    //   return code;
+    // }
+    async function getPlayerColor(){
+      return new Promise(async (resolve) => {
+        var playerColor = "";
+        while(!(potentialPlayers.includes(playerColor.toLowerCase()))){
+          playerColor = await promptBox("Choose a color between \n" + potentialPlayers);
+          console.log(playerColor);
+        }
+        potentialPlayers.splice(potentialPlayers.indexOf(playerColor), 1);
+        playerColor = playerColor.toLowerCase();
+        console.log(playerColor);
+        console.log(playerColor + " send??");
+        resolve(playerColor);
+      });
     }
 
     var newPlayer = true;
     pubnub.addListener({
       message: function(event){
           if(JSON.parse(event.message.content).data == "doneNewPlayers" && event.message.sender != uuid){
-            document.getElementById("addPlayer").removeEventListener("click", createNewPlayer);
+            document.getElementById("doneAdding").removeEventListener("click",doneAdding);
             resolve();
           }
       }
     });
-    function createNewPlayer(){
+    async function createNewPlayer(){
       if (newPlayer == true && potentialPlayers.length != 0){
-        var playerCode;
-        let playerOne = new Player(getPlayerCode(), getPlayerColor(), 0,0,0);
+        var playerColor;
+        await getPlayerColor().then(response => playerColor = response);
+        console.log(user);
+        console.log(playerColor)
+        let playerOne = new Player(user.id, playerColor, 0,0,0);
+        console.log(playerOne);
+        constPlayer = playerOne;
+        document.getElementById("playerTurn").innerHTML = "Welcome " + user.name + " you are " + constPlayer.player.toUpperCase();
+        document.getElementById("instructions").style.border = "thin solid " + constPlayer.player;
+        alert(constPlayer.player);
         players.push(playerOne);
-        document.getElementById("gameCode").innerHTML = "Game code: " + password;
-        addInfo("Player " + players[players.length - 1].player + " has joined the game")
+        await pubnub.updateSpace({id:String(password), name:"risk",custom:{data:JSON.stringify({potentialPlayers: potentialPlayers, newGamePlayers: players})},include:{customFields: true}})
+          .then(response => {
+            console.log(JSON.parse(response.data.custom.data));
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        addInfo("Player " + constPlayer.player + " has joined the game")
         pubnub.publish({
           channel: "pubnub_onboarding_channel",
-          message: {"sender": uuid, "content":JSON.stringify({players:players,potential: potentialPlayers,pass:password})}
+          message: {"sender": uuid, "content":JSON.stringify({player:playerOne})}
         }, function(status, response) {
             //handle error
         });
@@ -195,9 +308,10 @@ function createPlayers(){
       }
     }
 
-    function doneAdding(){
-      if (confirm("There are " + players.length + " players in the\ngame right now. Are you done adding players?")){
-        document.getElementById("addPlayer").removeEventListener("click", createNewPlayer);
+    async function doneAdding(){
+      var tempBool = false;
+      tempBool = await confirmBox("There are " + players.length + " players in the\ngame right now. Are you done adding players?");
+      if (tempBool){
         document.getElementById("doneAdding").removeEventListener("click",doneAdding);
         pubnub.publish({
           channel: "pubnub_onboarding_channel",
@@ -208,7 +322,8 @@ function createPlayers(){
         resolve();
       }
     }
-    document.getElementById("addPlayer").addEventListener("click", createNewPlayer);
+    console.log("should create new player");
+    createNewPlayer();
     document.getElementById("doneAdding").addEventListener("click",doneAdding);
   });
 }
@@ -252,37 +367,42 @@ function placeReinforcements(players){
       done.push(false);
       doneCheck.push(true);
     }
-    function addPlayerClick(){
-      if (playerNames.indexOf(event.target.className) == playerCodes.indexOf(Number(prompt("Enter your player code")))){
-        var player = players[playerNames.indexOf(event.target.className)];
+    async function addPlayerClick(){
+      if (playerNames.indexOf(event.target.className) == playerCodes.indexOf(constPlayer.code)){
         var index = countryNames.indexOf(event.target.id);
         var troopIndex = playerNames.indexOf(event.target.className);
         var possibleInputs = ["add", "remove"];
         var action = "";
         while (!possibleInputs.includes(action)){
-          action = prompt("Would you like to add or remove troops?").toLowerCase();
+          await promptBox("Would you like to add or remove troops?").then(response => action = response);
+          console.log("playerchose " + action);
+          action = action.toLowerCase();
         }
         numToPlace = "blah";
         while (isNaN(numToPlace)) {
-          numToPlace = prompt("How many troops would you like to " + action + "? \n You have " + numTroops[troopIndex] + " troops left");
+          numToPlace = await promptBox("How many troops would you like to " + action + "? \n You have " + numTroops[troopIndex] + " troops left");
         }
         numToPlace = Number(Number(numToPlace).toFixed(0));
         if (action == "add" && numToPlace <= numTroops[troopIndex] && numToPlace >= 0){
           countryList[index].troops += numToPlace;
           numTroops[troopIndex] -= numToPlace;
+          if (numTroops[troopIndex] == 0){
+            done[troopIndex] = await confirmBox("Are you done placing your troops?");
+          }
           setUpCountry(countryList[index]);
-          update([countryList[index]], false);
+          update([countryList[index]], false, troopIndex);
         } else if (action == "remove" && numToPlace <= countryList[index].troops && numToPlace >=0) {
           countryList[index].troops -= numToPlace;
           numTroops[troopIndex] += numToPlace;
+          if (numTroops[troopIndex] == 0){
+            done[troopIndex] = await confirmBox("Are you done placing your troops?");
+          }
           setUpCountry(countryList[index]);
-          update([countryList[index]], false);
+          update([countryList[index]], false, troopIndex);
         } else {
           addInformation("Invalid troop number");
         }
-        if (numTroops[troopIndex] == 0){
-          done[troopIndex] = confirm("Are you done placing your troops?");
-        }
+
         if (JSON.stringify(done) == JSON.stringify(doneCheck)){
           countryList.forEach(x=> {
             document.getElementById(x.name).removeEventListener("click", addPlayerClick);
@@ -291,9 +411,10 @@ function placeReinforcements(players){
         }
       }
     }
-    countryList.forEach(x => {
+    for(var i = 0; i < countryList.length; i++){
+      var x = countryList[i];
       document.getElementById(x.name).addEventListener("click", addPlayerClick);
-    });
+    };
   });
 }
 
@@ -303,20 +424,23 @@ function createCountries(players){
   return new Promise((resolve, reject) => {
     var player = players[playerNum % players.length];
     addInstructions(players[playerNum%players.length].player + "'s turn to choose a country");
+    if(constPlayer.player == player.player){
+      addInstructions(constPlayer.player + " its YOUR TURN to choose a country");
+    }
     var countryNameList = [];
     for (var i = 0; i < countryList.length; i++){
       countryNameList.push(countryList[i].name);
     }
 
-    function countryClick(){
+    async function countryClick(){
       if (playerNum < countryList.length){
         player = players[playerNum % players.length];
-        var code = prompt("Player " + player.player + " enter your code");
+        var code = constPlayer.code;
         if (code == player.code && event.target.className == ""){
           var ind = countryNameList.indexOf(event.target.id);
           countryList[ind].whoOwns = player.player;
           setUpCountry(countryList[ind]);
-          update([countryList[ind]], true);
+          update([countryList[ind]], true, 0);
           playerNum += 1;
           addInstructions(players[playerNum%players.length].player + "'s turn to choose a country");
           player = players[playerNum % players.length];
@@ -345,15 +469,18 @@ function createCountries(players){
 
 
 function loadGame(){
+  localStorage.setItem("riskLoadGameCode", String(password));
   window.open("loadGame.html");
-  //setTimeout(window.close(), 500);
 }
 
 
 
 window.onLoad = setTimeout(newGame, 500);
 
-const uuid = PubNub.generateUUID();
+
+const user = JSON.parse(localStorage.getItem("pubnubUser"));
+const uuid = user.id;
+const name = user.name;
 const pubnub = new PubNub({
   publishKey: "pub-c-365259b8-ed0b-4549-9805-9c92e68ca219",
   subscribeKey: "sub-c-c8abbac2-8416-11ea-9e86-0adc820ce981",
@@ -377,20 +504,22 @@ pubnub.addListener({
       });
       if(!data.selecting){
         console.log("updateReinforcements")
-        done = data.done;
-        numTroops = data.numTroops;
+        done[data.index] = data.done;
+        numTroops[data.index] = data.numTroops;
       } else {
         playerNum += 1;
         addInstructions(players[playerNum%players.length].player + "'s turn to choose a country");
       }
     //  localStorage.setItem(game.password, JSON.stringify(game));
-  } else if(event.message.sender != uuid && JSON.parse(event.message.content).players != null){
+  } else if(event.message.sender != uuid && JSON.parse(event.message.content).player != null){
       data = JSON.parse(event.message.content);
-      players = data.players;
-      potentialPlayers = data.potential;
-      password = data.pass;
-      document.getElementById("gameCode").innerHTML = "Game code: " + password;
+      console.log(data.player);
+      players.push(data.player);
+      potentialPlayers.splice(potentialPlayers.indexOf(data.player.player), 1);
+      // document.getElementById("gameCode").innerHTML = "Game code: " + password;
       addInfo("Player " + players[players.length - 1].player + " has joined the game");
     }
   }
 });
+
+//make the password display when game loads

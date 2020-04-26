@@ -209,16 +209,37 @@
           <p id="playerTurn" style="width:365px; margin-left:10px"></p>
           <p id="instructions" style="width:365px; margin-left:10px"></p>
         </div>
-        <div id="info" style="margin-top:150px;">
+        <div style="margin-top:40" id="inputDiv" class="inputDiv">
+          <h2 style="width:365">Player Input</h2>
+          <p id="inputText" style="width:350px"></p>
+          <div id="promptBox">
+            <div style="display:flex">
+              <main style="width:200px">
+                <input id="inputContent"></input>
+              </main>
+              <aside style="width:150px">
+                <button id="inputContentSubmit" style="width:50px;height:20px;font-size:10px">Submit</button>
+              </aside>
+            </div>
+          </div>
+          <div id="confirmBox">
+            <div style="display:flex; margin-top:10px">
+              <main style="width:50px">
+                <button id="inputTrue" style="width:30px;height:20px;font-size:10px">Yes</button>
+              </main>
+              <aside style="width:150px">
+                <button id="inputFalse" style="width:30px;height:20px;font-size:10px">No</button>
+              </aside>
+            </div>
+          </div>
+        </div>
+        <div id="info" style="margin-top:120px;">
           <h2 style="width:365px;">Game Info</h2>
         </div>
       </aside>
     </div>
 
     <div style="display:flex">
-      <main style="width:150px">
-        <button id="addPlayer" style="margin-top: 20px;width:100px; height:30px; font-size:15px"> Add Player </button>
-      </main>
       <aside style="width:180px">
         <button id="doneAdding" style="position:relative;margin-top: 20px;width:100px; height:30px; font-size:15px">Start Game</button>
         <p style="position:relative">Only click when all players have been added</p>

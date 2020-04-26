@@ -1,4 +1,5 @@
-addInfo//make it able to cash in at start of turn?
+//won't let me split reinforcements
+//whose turn it is doesnt register on the other screen
 
 var game;
 var awardHorseValues = [4,6,8,10,15,20,25,30,35,40,45,50,55,60]
@@ -6,18 +7,15 @@ var awardHorseIndex = 0;
 var adjascantCountryPromises = [];
 var countryNames = [];
 var myTurn = false;
-
+var constPlayer;
 //Game(password, countries, players, awardHorse, turn){
 //Country(name, whoOwns, troops, adjascent){
 //Player(code, player, cannon, horse, infantry){
 
 document.getElementById("showCards").addEventListener("click", async function(){
-  var code;
-  await promptBox("Enter player code")
-    .then(response => code = Number(response));
   var player;
   game.players.forEach(pl => {
-    if (pl.code == code){
+    if (pl.code == constPlayer.code) {
       player = pl;
     }
   });
@@ -75,7 +73,8 @@ function confirmBox(text){
       document.getElementById("inputFalse").removeEventListener("click", falseClick);
       document.getElementById("confirmBox").hidden = true;
       document.getElementById("inputText").innerHTML = "";
-      console.log("event Listener closed for check");
+      document.getElementById("inputDiv").style.border = "";
+      document.getElementById("inputDiv").style.paddingBottom = "10px";
       resolve(true);
     }
     function falseClick(){
@@ -83,13 +82,16 @@ function confirmBox(text){
       document.getElementById("inputFalse").removeEventListener("click", falseClick);
       document.getElementById("confirmBox").hidden = true;
       document.getElementById("inputText").innerHTML = "";
+      document.getElementById("inputDiv").style.border = "";
+      document.getElementById("inputDiv").style.paddingBottom = "10px";
       resolve(false);
     }
     document.getElementById("confirmBox").hidden = false;
     document.getElementById("inputText").innerHTML = text;
+    document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
+    document.getElementById("inputDiv").style.paddingBottom = "30px";
     document.getElementById("inputTrue").addEventListener("click", trueClick);
     document.getElementById("inputFalse").addEventListener("click", falseClick);
-    console.log("eventListener added for confirm");
   });
 }
 
@@ -101,6 +103,7 @@ function promptBox(text){
       document.getElementById("inputText").innerHTML = "";
       var content = document.getElementById("inputContent").value;
       document.getElementById("inputContent").value = "";
+      document.getElementById("inputDiv").style.border = "";
       resolve(content);
     }
     function submitEnter(event){
@@ -110,11 +113,13 @@ function promptBox(text){
         document.getElementById("inputText").innerHTML = "";
         var content = document.getElementById("inputContent").value;
         document.getElementById("inputContent").value = "";
+        document.getElementById("inputDiv").style.border = "";
         resolve(content);
       }
     }
     document.getElementById("promptBox").hidden = false;
     document.getElementById("inputText").innerHTML = text;
+    document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
     document.getElementById("inputContentSubmit").addEventListener("click", submitClick);
     document.addEventListener("keydown", submitEnter)
   });
@@ -146,7 +151,18 @@ function setUpCountry(country, initial){
 
 
 async function playerTurn(player){
+  var turnPlayer = player;
+  var initialReinforcements;
+  var attackCountry;
+  var conqueredCountries;
+  var cashIn;
+  var cashInReinforcements;
+  var freeMoveCountry;
+  var freeMoveDestination;
+  function turnSummary (turnPlayer, reinforcements, attackCountry, conqueredCountries, cashIn, cashInReinforcements, freeMoveCountry, freeMoveDestination){
 
+  }
+  //////ADD THE TURN SUMMARY INFO TO THE VARIABLES
   async function placeReinforcements(reinforcements, countries, attackingCountry, freeMove) {//if attackingCountry == false then in turn start reinforcements
     return new Promise(resolve => {
       if (!attackingCountry) {
@@ -158,45 +174,54 @@ async function playerTurn(player){
       }
       async function reinforcementClick(){
         var country;
-        game.countries.forEach(countr => {
+        game.countries.forEach(countr => { //define the country to place troops into
           if (countr.name == event.target.id){
             country = countr;
           }
         });
-        if(country.troops == 0 && country.whoOwns != player.player){
+        if(country.troops == 0 && country.whoOwns != player.player){//if 0 troops and enemy owned then change whoOwns
           country.whoOwns = player.player;
           setUpCountry(country, false);
         }
         var done = false;
         var numToPlace = "o";
-        if (freeMove){
+        if (freeMove){ //when freeMoving all reinforcements go to the same country
           numToPlace = Number(reinforcements);
         } else {
           while (isNaN(numToPlace) || numToPlace < 0 || numToPlace > reinforcements){
-            numToPlace = await promptBox("How many reinforcements would you like to place?\nYou have " + reinforcements + " remaining");
+            await promptBox("How many reinforcements would you like to place?\nYou have " + reinforcements + " remaining")
+              .then(val => numToPlace = val);
             numToPlace = Number(Number(numToPlace).toFixed(0));
-          }
+            console.log(numToPlace);
+            console.log("inside the reinforcements. previous is the number from prompt box")
+          }//get Valid num (maybe change while loop to single if?)
         }
 
         reinforcements -= numToPlace;
-        if(attackingCountry != false){
+        if(attackingCountry != false){ //if attacking country is anything other than false
           country.troops += numToPlace;
           attackingCountry.troops -= numToPlace
           setUpCountry(country, false);
           setUpCountry(attackingCountry, false);
-        } else if (!attackingCountry){
+        } else if (attackingCountry == false){
           country.troops += numToPlace;
           setUpCountry(country, false);
         }
         if (reinforcements == 0 || attackingCountry != false){
-          if (freeMove) {
-            done = true;
-          } else {
+          if (!freeMove) {
             await confirmBox("Are you done placing reinforcements?")
-              .then(response => done = response);
+              .then(response => {
+                done = response;
+                console.log(done);
+                console.log("THIS SHOULD HAPPEN BEFORE")
+              });
+              console.log("THIS SHOULD HAPPEN AFTER");
+          } else {
+            done = true;
           }
         }
         if (done){
+          console.log("the variable 'done' is true and we should no resolve the placeReinforcements")
           countries.forEach(countr => {
             document.getElementById(countr.name).removeEventListener("click", reinforcementClick);
           });
@@ -330,7 +355,10 @@ async function playerTurn(player){
                   }
                 }
               });
-              placeReinforcements(numToRemove, selectedCA, selectedC, true).then(() => resolve());
+              function wrap(){
+                resolve();
+              }
+              await placeReinforcements(numToRemove, selectedCA, selectedC, true).then(() => wrap());
             }
             var tempBool = false;
             await confirmBox(player.player + " would you like to free move?")
@@ -369,7 +397,7 @@ async function playerTurn(player){
         .then(response => tempBool = response);
       if (tempBool) {
         spendCards()
-          .then(selection => {
+          .then(async (selection) => {
             var can = player.cards.cannon;
             var hor = player.cards.horse;
             var inf = player.cards.infantry;
@@ -396,7 +424,7 @@ async function playerTurn(player){
                 }
               });
               addInstructions("Place Reinforcements");
-              placeReinforcements(reinforcements, playerCountries, false).then(useless => {
+              await placeReinforcements(reinforcements, playerCountries, false, false).then(() => {
                 if (selection.slice(1) == "I"){
                   player.cards.infantry -= 3;
                 } else if (selection.slice(1) == "H") {
@@ -421,7 +449,7 @@ async function playerTurn(player){
                 }
               });
               addInstructions("Place Reinforcements");
-              placeReinforcements(reinforcements, playerCountries, false).then(useless => {
+              await placeReinforcements(reinforcements, playerCountries, false, false).then(() => {
                 player.cards.infantry -=1;
                 player.cards.horse -= 1;
                 player.cards.cannon -= 1;
@@ -494,7 +522,8 @@ async function playerTurn(player){
                 for (var i = 0; i < country.adjascent.length; i++){
                   var name = country.adjascent[i];
                   if (document.getElementById(name).className != player.player && attackNextCountry == "esc"){
-                    attackNextCountry = await confirmBox("Would you like to attack another country adjascent to " + country.name);
+                    await confirmBox("Would you like to attack another country adjascent to " + country.name)
+                      .then(response => attackNextCountry = response);
                       console.log(attackNextCountry + " " + i);
                   }
                 }
@@ -511,24 +540,9 @@ async function playerTurn(player){
               } else if (attackTroops <= 0 && defenseTroops > 0){
                 addInfo("Defender Wins!");
                 lost = true;
-                tempBool = false;
-                await confirmBox("Player " + defender.whoOwns + " do you wish to take the enemy territory?")
-                  .then(r => tempBool = r);
-                if (tempBool){
-                  country.whoOwns = defender.whoOwns;
-                  var newTroops = 0;
-                  var troopsToMove = 10000000000;
-                  while (troopsToMove > defenseTroops || troopsToMove < 0){
-                    troopsToMove = await promptBox("How may troops would you like \n to move into new territory?\nYou have " + defenseTroops + " left");
-                    troopsToMove = Number(Number(troopsToMove).toFixed(0));
-                    // troopsToMove = Number(Number(prompt("How may troops would you like \n to move into new territory?\nYou have " + defenseTroops + " left")).toFixed(0));
-                  }
-                  country.troops = troopsToMove;
-                  defender.troops = (defenseTroops - troopsToMove);
-                } else {
-                  country.troops = 0;
-                  defender.troops = defenseTroops;
-                }
+                country.whoOwns = defender.whoOwns;
+                country.troops = 0;
+                defender.troops = defenseTroops;
                 setUpCountry(country, false);
                 setUpCountry(defender, false);
                 adjascants.forEach(x => {
@@ -578,7 +592,8 @@ async function playerTurn(player){
                   attackNew = false;
                   attackDone(attackTroops, defenseTroops);
                 } else {
-                  attackNew = await confirmBox("Do you wish to continue attacking?")
+                  await confirmBox("Do you wish to continue attacking?")
+                    .then(response => attackNew = response);
                     console.log(attackNew);
                   if (!attackNew) {
                     country.troops = attackTroops;
@@ -606,7 +621,9 @@ async function playerTurn(player){
               for (var i = 0; i < country.adjascent.length; i++){
                 var name = country.adjascent[i]
                 if (document.getElementById(name).className != player.player && attackNextCountry == "esc"){
-                  attackNextCountry = await confirmBox("Would you like to attack another country adjascent to " + country.name);
+                  attackNextCountry =
+                  await confirmBox("Would you like to attack another country adjascent to " + country.name)
+                    .then(response => attackNextCountry = response);
                 }
               }
               if(attackNextCountry) {
@@ -636,21 +653,30 @@ async function playerTurn(player){
 
 
       Promise.all(adjascantCountryPromises)
-        .then(function(values){
+        .then(async function(values){
           cssEffect(adjascants, player, false);
           addInformation("Split up reinforcements among conquered territories");
-          placeReinforcements(country.troops, conquered.slice(1), country)
+          console.log(country.troops);
+          console.log(conquered.slice(1));
+          console.log(country);
+          await placeReinforcements(country.troops, conquered.slice(1), country, false)
            .then(() => {
+             console.log("insideThen");
              nextTurn();
-            })
+           });
           })
-          .catch(() => {
+          .catch(async () => {
+            console.log("all catch");
             cssEffect(adjascants, player, false);
             adjascantCountryPromises = [];
             if(conquered.length > 1 && lost == false){
-              addInformation("Split up reinforcements among conquered territories");
-              placeReinforcements(country.troops, conquered.slice(1), country)
+              addInstructions("Split up reinforcements among conquered territories");
+              console.log(country.troops);
+              console.log(conquered.slice(1));
+              console.log(country);
+              await placeReinforcements(country.troops, conquered.slice(1), country, false)
               .then(() => {
+                console.log("nextTurn");
                 nextTurn();
                 });
               } else {
@@ -732,7 +758,7 @@ async function playerTurn(player){
       turnStartCountries.push(x);
     }
   });
-  placeReinforcements(turnStartReinforcements(), turnStartCountries, false)
+  placeReinforcements(turnStartReinforcements(), turnStartCountries, false, false)
     .then(() => {
       return chooseAttack(turnStartCountries)
     })
@@ -784,17 +810,22 @@ function turnListener(){
 
   return new Promise (resolve => {
     async function advanceTurn(){
-      var checkCode = 0;
-      await promptBox("Enter player code player " + game.players[game.turn % game.players.length].player)
-        .then(response => checkCode = Number(response))
-      if (game.players[game.turn % game.players.length].code == checkCode){
+      console.log(constPlayer.code);
+      console.log(game.players);
+      if (game.players[game.turn % game.players.length].code == constPlayer.code){
         document.getElementById("turn").removeEventListener("click", advanceTurn);
         myTurn = true;
+        document.getElementById("turn").hidden = true;
+        document.getElementById("inputDiv").style.border = "";
+        document.getElementById("inputDiv").style.paddingBottom = "10";
         resolve(null);
       }
     }
     myTurn = false;
     addInstructions(game.players[game.turn%game.players.length].player + "'s Turn. Click 'Start Turn' to begin");
+    if(game.players[game.turn%game.players.length].player == constPlayer.player){
+      addInstructions("YOUR Turn. Click 'Start Turn' to begin");
+    }
     document.getElementById("turn").addEventListener("click", advanceTurn);
   });
 }
@@ -811,28 +842,33 @@ async function loadGame(){
     }
     document.getElementById(String(game.awardHorse)).className = "circle";
     awardHorseIndex = awardHorseValues.indexOf(game.awardHorse);
+    var tempPlayerCodes = [];
+    game.players.forEach(x => {
+      tempPlayerCodes.push(x.code);
+    });
+    constPlayer = game.players[tempPlayerCodes.indexOf(user.id)];
+    document.getElementById("gameCode").innerHTML = "Game Code: " + game.password;
+    document.getElementById("playerTurn").innerHTML = "Welcome " + user.name + " you are " + constPlayer.player.toUpperCase();
+    document.getElementById("instructions").style.border = "thin solid " + constPlayer.player;
+    document.getElementById("instructions").style.padding = "3px 3px 3px 3px";
     turnListener()
       .then((testBlah) => playerTurn(game.players[game.turn % game.players.length]));
   }
 
-  var code = "0";
-  while(!(code.length == 4) || (isNaN(code))){
-    await promptBox("enter four digit game code")
-      .then(response => code = response);
-    // code = prompt("enter four digit game code");
-  }
+  var code = localStorage.getItem("riskLoadGameCode");
   pubnub.getSpace({spaceId:code})
     .then(response => {
       game = JSON.parse(response.data.custom.data);
       start();
     })
     .catch((error) => {
-      if (localStorage.getItem(code) != null) {
-        game = JSON.parse(localStorage.getItem(code));
+      if(localStorage.getItem(String(code)) != null){
+        game = JSON.parse(localStorage.getItem(String(code)));
         start();
       } else {
-        addInstructions("Invalid code\nIf the code is correct the storage may have run out. Contact other game members");
+        alert("something went wrong");
       }
+      console.log(error);
     });
 
 }
@@ -849,7 +885,9 @@ window.addEventListener("beforeunload", function(e){
   e.returnValue = "";
 });
 
-  const uuid = PubNub.generateUUID();
+  const user = JSON.parse(localStorage.getItem("pubnubUser"));
+  const uuid = user.id;
+  const name = user.name;
   const pubnub = new PubNub({
     publishKey: "pub-c-365259b8-ed0b-4549-9805-9c92e68ca219",
     subscribeKey: "sub-c-c8abbac2-8416-11ea-9e86-0adc820ce981",
@@ -870,6 +908,13 @@ window.addEventListener("beforeunload", function(e){
           setUpCountry(x, false);
         });
         localStorage.setItem(game.password, JSON.stringify(game));
+        addInstructions(game.players[game.turn%game.players.length].player + "'s Turn. Click 'Start Turn' to begin");
+        if(game.players[game.turn%game.players.length].player == constPlayer.player){
+          addInstructions("YOUR Turn. Click 'Start Turn' to begin");
+          document.getElementById("turn").hidden = false;
+          document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
+          document.getElementById("inputDiv").style.paddingBottom = "81px";
+        }
       }
     }
   });
