@@ -1,0 +1,124 @@
+* {
+
+}
+
+.openChat {
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #29a329;
+  padding: 20px;
+  border-radius: 50px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  opacity: 0.8;
+}
+
+.openChat:hover {
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.4s ease 0s;
+  opacity: 1;
+}
+
+.title {
+  font-size: 22px;
+}
+
+.list {
+  background: linear-gradient(to right, #6093ac, #29a329);
+}
+
+.listObject {
+  background-color: #29a329;
+  opacity: 0.8;
+}
+
+.listObject:hover {
+  background: linear-gradient(to right, #29a329, #6093ac);
+  opacity: 1;
+  transition: all 0.4s ease 0s;
+}
+
+.lastText {
+
+}
+
+.close {
+  color: white;
+  background-color: #ff6961;
+  opacity: 0.85;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+.send {
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #29a329;
+  border-radius: 15px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  opacity: 0.8;
+}
+
+.send:hover {
+  transition: all 0.4s ease 0s;
+  opacity: 1;
+}
+
+.fullChatPage {
+  background: linear-gradient(to right, #808080, #d9d9d9, #808080);
+}
+
+.chatPage {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.leftTextName {
+  background-color: #ed4337;
+  border-radius: 7px;
+}
+
+.rightTextName {
+  background-color: #29a329;
+  border-radius: 7px;
+  text-align: right;
+}
+
+.rightText {
+  text-align: left;
+  font-size: 12.5px;
+}
+
+.leftText {
+  font-size: 12.5px;
+}
+
+.chatType {
+  font-size: 12.5px;
+}
+
+.sendEnter {
+
+}
+
+.backButton {
+  color: white;
+  background-color: #ff6961;
+  opacity: 0.85;
+  font-size: 12.5px;
+}
+
+.backButton:hover {
+  opacity: 1;
+}
