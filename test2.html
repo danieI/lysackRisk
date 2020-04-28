@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width">
+      <title>riskChat</title>
+      <link href="test.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <button class="openChat" id="openChat">Open Chat</button>
+        <div id="div"></div>
+        <script>
+          var user = {id:"dani01", name:"Dan01", pass:"1234"};
+          const openB = document.getElementById("openChat");
+          openB.addEventListener("click", function(){
+            console.log("temp");
+            var frame = document.createElement("iFrame");
+            frame.style.height = "480px";
+            frame.src="chatOptions.html";
+            document.getElementById("div").appendChild(frame);
+            localStorage.setItem("user", JSON.stringify(user));
+          });
+        </script>
+    </body>
+</html>

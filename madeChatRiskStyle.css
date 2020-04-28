@@ -34,6 +34,9 @@
 .listObject {
   background-color: #29a329;
   opacity: 0.8;
+  width:260px;
+  height: 50px;
+  padding-bottom:5%;
 }
 
 .listObject:hover {
@@ -43,7 +46,7 @@
 }
 
 .lastText {
-
+  text-align:left;
 }
 
 .close {
@@ -82,17 +85,36 @@
   overflow-x: hidden;
   display: flex;
   flex-direction: column-reverse;
+  vertical-align: bottom;
 }
 
 .leftTextName {
   background-color: #ed4337;
   border-radius: 7px;
+  width:72%;
+  padding-left:2px;
+  padding-right:2px;
+  padding-top:2px;
+}
+
+.leftOuterDiv{
+  width:100%;
+  padding-right:25%;
 }
 
 .rightTextName {
   background-color: #29a329;
   border-radius: 7px;
   text-align: right;
+  width:72%;
+  padding-left:2px;
+  padding-right:2px;
+  padding-top:2px;
+}
+
+.rightOuterDiv{
+  width:100%;
+  padding-left:25%;
 }
 
 .rightText {

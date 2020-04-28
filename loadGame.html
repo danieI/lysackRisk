@@ -5,258 +5,318 @@
     <link rel="stylesheet" href="styles.css"></link>
   </head>
   <body>
-    <h1> Risk (Jesse: Y -> Yellow, G -> Green, B -> Blue, R -> Red, W -> White, P -> Purple)</h1>
-    <layer id="background">
-      <img src="gameBoard.jpg" alt="Game Board"
-        height="600" width="1000" style="margin-top:20px" id="imageBack"></img>
-    </layer>
-    <layer id="countryButtons">
-      <button id="brazil"
-        style="width:120px;margin-left:290px;
-          margin-top:-245px">
-        Brazil </button>
-      <button id="peru"
-        style="width:120px;margin-left:190px;
-          margin-top:-220px">
-        Peru </button>
-      <button id="argentina"
-        style="width:130px;margin-left:200px;
-          margin-top: -145px">
-        Argentina </button>
-      <button id="venezuela"
-        style="width:130px;margin-left:200px;
-          margin-top:-300px">
-        Venezuala </button>
+    <div style="width:1365px">
+      <h1> Risk <span class="jesse">(Jesse: Y -> Yellow, G -> Green, B -> Blue, R -> Red, W -> White, P -> Purple)</span> </h1>
+    </div>
+    <div style="display: flex;">
+      <main style="width:1010px;">
+        <layer>
+          <div class="backImage">
+            <img src="gameBoard.jpg" alt="Game Board"
+              height="600" width="1000"></img>
+          </div>
+        </layer>
 
-      <button id="centralAmerica"
-        style="width:160px;margin-left:120px;
-          margin-top:-350px">
-        Central America </button>
-      <button id="WesternUS"
-        style="width:140px;margin-left:80px;
-          margin-top:-410px">
-        Western U.S. </button>
-      <button id="EasternUS"
-        style="width:140px;margin-left:185px;
-          margin-top:-380px">
-        Eastern U.S. </button>
-      <button id="quebec"
-        style="width:110px;margin-left:260px;
-          margin-top:-430px">
-        Quebec </button>
-      <button id="ontario"
-        style="width:100px;margin-left:190px;
-          margin-top:-460px">
-        Ontario </button>
-      <button id="alberta"
-        style="width:110px;margin-left:75px;
-          margin-top:-450px">
-        Alberta </button>
-      <button id="greenland"
-        style="width:140px;margin-left:310px;
-          margin-top:-550px">
-        Greenland </button>
-      <button id="nwt"
-        style="width:100px;margin-left:120px;
-          margin-top:-500px">
-        N.W.T. </button>
-      <button id="alaska"
-        style="width:100px;margin-left:10px;
-          margin-top:-500px">
-        Alaska </button>
+        <layer>
+          <div class="countryButtons" style="margin-top:20px;">
+            <button id="brazil"
+              style="width:120px;margin-left:290px;
+                margin-top:-245px">
+              Brazil </button>
+            <button id="peru"
+              style="width:120px;margin-left:190px;
+                margin-top:-220px">
+              Peru </button>
+            <button id="argentina"
+              style="width:130px;margin-left:200px;
+                margin-top: -145px">
+              Argentina </button>
+            <button id="venezuela"
+              style="width:130px;margin-left:200px;
+                margin-top:-300px">
+              Venezuala </button>
 
-
-
-        <button id="northAfrica"
-          style="width:120px;margin-left:410px;
-            margin-top:-280px">
-          North Africa </button>
-        <button id="egypt"
-          style="width:100px;margin-left:480px;
-            margin-top:-320px">
-          Egypt </button>
-        <button id="congo"
-          style="width:100px;margin-left:480px;
-            margin-top:-220px">
-          Congo </button>
-        <button id="southAfrica"
-          style="width:110px;margin-left:480px;
-            margin-top:-130px">
-          South Africa </button>
-        <button id="eastAfrica"
-          style="width:120px;margin-left:520px;
-            margin-top:-255px">
-          East Africa </button>
-        <button id="madagascar"
-          style="width:120px;margin-left:580px;
-            margin-top:-150px">
-          Madagascar </button>
-
-
-        <button id="iceland"
-          style="width:100px;margin-left:380px;
-            margin-top:-480px">
-          Iceland </button>
-        <button id="greatBritian"
-          style="width:110px;margin-left:380px;
-            margin-top:-440px">
-          Great Britian </button>
-        <button id="scandinavia"
-          style="width:120px;margin-left:475px;
-            margin-top:-500px">
-          Scandinavia </button>
-        <button id="ukraine"
-          style="width:100px;margin-left:530px;
-            margin-top:-450px">
-          Ukraine </button>
-        <button id="northernEurope"
-          style="width:140px;margin-left:440px;
-            margin-top:-420px">
-          Northern Europe </button>
-        <button id="westernEurope"
-          style="width:140px;margin-left:345px;
-            margin-top:-370px">
-          Western Europe </button>
-        <button id="southernEurope"
-          style="width:140px;margin-left:450px;
-            margin-top:-390px">
-          Southern Europe </button>
+            <button id="centralAmerica"
+              style="width:160px;margin-left:120px;
+                margin-top:-350px">
+              Central America </button>
+            <button id="WesternUS"
+              style="width:140px;margin-left:80px;
+                margin-top:-410px">
+              Western U.S. </button>
+            <button id="EasternUS"
+              style="width:140px;margin-left:185px;
+                margin-top:-380px">
+              Eastern U.S. </button>
+            <button id="quebec"
+              style="width:110px;margin-left:260px;
+                margin-top:-430px">
+              Quebec </button>
+            <button id="ontario"
+              style="width:100px;margin-left:190px;
+                margin-top:-460px">
+              Ontario </button>
+            <button id="alberta"
+              style="width:110px;margin-left:75px;
+                margin-top:-450px">
+              Alberta </button>
+            <button id="greenland"
+              style="width:140px;margin-left:310px;
+                margin-top:-550px">
+              Greenland </button>
+            <button id="nwt"
+              style="width:100px;margin-left:120px;
+                margin-top:-500px">
+              N.W.T. </button>
+            <button id="alaska"
+              style="width:100px;margin-left:10px;
+                margin-top:-500px">
+              Alaska </button>
 
 
 
-        <button id="middleEast"
-          style="width:120px;margin-left:540px;
-            margin-top:-340px">
-          Middle East </button>
-        <button id="afghanistan"
-          style="width:110px;margin-left:600px;
-            margin-top:-400px">
-          Afghanistan </button>
-        <button id="india"
-          style="width:100px;margin-left:670px;
-            margin-top:-320px">
-          India </button>
-        <button id="siam"
-          style="width:100px;margin-left:750px;
-            margin-top:-290px">
-          Siam </button>
-        <button id="china"
-          style="width:110px;margin-left:730px;
-            margin-top:-360px">
-          China </button>
-        <button id="mongolia"
-          style="width:120px;margin-left:760px;
-            margin-top:-400px">
-          Mongolia </button>
-        <button id="irkutsk"
-          style="width:110px;margin-left:760px;
-            margin-top:-450px">
-          Irkutsk </button>
-        <button id="ural"
-          style="width:100px;margin-left:630px;
-            margin-top:-465px">
-          Ural </button>
-        <button id="siberia"
-          style="width:110px;margin-left:675px;
-            margin-top:-488px">
-          Siberia </button>
-        <button id="yakutsk"
-          style="width:110px;margin-left:770px;
-            margin-top:-505px">
-          Yakutsk </button>
-        <button id="kamchatka"
-          style="width:120px;margin-left:880px;
-            margin-top:-490px">
-          Kamchatka </button>
-        <button id="japan"
-          style="width:100px;margin-left:860px;
-            margin-top:-380px">
-          Japan </button>
+              <button id="northAfrica"
+                style="width:120px;margin-left:410px;
+                  margin-top:-280px">
+                North Africa </button>
+              <button id="egypt"
+                style="width:100px;margin-left:480px;
+                  margin-top:-320px">
+                Egypt </button>
+              <button id="congo"
+                style="width:100px;margin-left:480px;
+                  margin-top:-220px">
+                Congo </button>
+              <button id="southAfrica"
+                style="width:110px;margin-left:480px;
+                  margin-top:-130px">
+                South Africa </button>
+              <button id="eastAfrica"
+                style="width:120px;margin-left:520px;
+                  margin-top:-255px">
+                East Africa </button>
+              <button id="madagascar"
+                style="width:120px;margin-left:580px;
+                  margin-top:-150px">
+                Madagascar </button>
+
+
+              <button id="iceland"
+                style="width:100px;margin-left:380px;
+                  margin-top:-480px">
+                Iceland </button>
+              <button id="greatBritian"
+                style="width:110px;margin-left:380px;
+                  margin-top:-440px">
+                Great Britian </button>
+              <button id="scandinavia"
+                style="width:120px;margin-left:475px;
+                  margin-top:-500px">
+                Scandinavia </button>
+              <button id="ukraine"
+                style="width:100px;margin-left:530px;
+                  margin-top:-450px">
+                Ukraine </button>
+              <button id="northernEurope"
+                style="width:140px;margin-left:440px;
+                  margin-top:-420px">
+                Northern Europe </button>
+              <button id="westernEurope"
+                style="width:140px;margin-left:345px;
+                  margin-top:-370px">
+                Western Europe </button>
+              <button id="southernEurope"
+                style="width:140px;margin-left:450px;
+                  margin-top:-390px">
+                Southern Europe </button>
 
 
 
-        <button id="indonesia"
-          style="width:100px;margin-left:760px;
-            margin-top:-220px">
-          Indonesia </button>
-        <button id="newGuinea"
-          style="width:100px;margin-left:880px;
-            margin-top:-210px">
-          New Guinea </button>
-        <button id="westernAustralia"
-          style="width:125px;margin-left:790px;
-            margin-top:-120px">
-          Western Australia </button>
-        <button id="easternAustralia"
-          style="width:120px;margin-left:880px;
-            margin-top:-150px">
-          Eastern Australia </button>
+              <button id="middleEast"
+                style="width:120px;margin-left:540px;
+                  margin-top:-340px">
+                Middle East </button>
+              <button id="afghanistan"
+                style="width:110px;margin-left:600px;
+                  margin-top:-400px">
+                Afghanistan </button>
+              <button id="india"
+                style="width:100px;margin-left:670px;
+                  margin-top:-320px">
+                India </button>
+              <button id="siam"
+                style="width:100px;margin-left:750px;
+                  margin-top:-290px">
+                Siam </button>
+              <button id="china"
+                style="width:110px;margin-left:730px;
+                  margin-top:-360px">
+                China </button>
+              <button id="mongolia"
+                style="width:120px;margin-left:760px;
+                  margin-top:-400px">
+                Mongolia </button>
+              <button id="irkutsk"
+                style="width:110px;margin-left:760px;
+                  margin-top:-450px">
+                Irkutsk </button>
+              <button id="ural"
+                style="width:100px;margin-left:630px;
+                  margin-top:-465px">
+                Ural </button>
+              <button id="siberia"
+                style="width:110px;margin-left:675px;
+                  margin-top:-488px">
+                Siberia </button>
+              <button id="yakutsk"
+                style="width:110px;margin-left:770px;
+                  margin-top:-505px">
+                Yakutsk </button>
+              <button id="kamchatka"
+                style="width:120px;margin-left:880px;
+                  margin-top:-490px">
+                Kamchatka </button>
+              <button id="japan"
+                style="width:100px;margin-left:860px;
+                  margin-top:-380px">
+                Japan </button>
 
 
 
+              <button id="indonesia"
+                style="width:100px;margin-left:760px;
+                  margin-top:-220px">
+                Indonesia </button>
+              <button id="newGuinea"
+                style="width:100px;margin-left:880px;
+                  margin-top:-210px">
+                New Guinea </button>
+              <button id="westernAustralia"
+                style="width:125px;margin-left:790px;
+                  margin-top:-120px">
+                Western Australia </button>
+              <button id="easternAustralia"
+                style="width:120px;margin-left:880px;
+                  margin-top:-150px">
+                Eastern Australia </button>
+          </div>
+        </layer>
+      </main>
+      <aside style="width:365px; flex: 1; margin-left:10px">
+        <div>
+          <h2 style="width:365px;">Game Instructions</h2>
+          <p id="gameCode"style="width:365px; margin-left:10px"></p>
+          <p id="playerTurn" style="width:365px; margin-left:10px"></p>
+          <p id="instructions" style="width:365px; margin-left:10px"></p>
+        </div>
+        <div style="margin-top:40">
+          <h2 style="width:365">Player Input</h2>
+          <p id="inputText" style="width:350px"></p>
+          <div id="promptBox">
+            <div style="display:flex">
+              <main style="width:200px">
+                <input id="inputContent"></input>
+              </main>
+              <aside style="width:150px">
+                <button id="inputContentSubmit" style="width:50px;height:20px;font-size:10px">Submit</button>
+              </aside>
+            </div>
+          </div>
+          <div id="confirmBox">
+            <div style="display:flex; margin-top:10px">
+              <main style="width:50px">
+                <button id="inputTrue" style="width:30px;height:20px;font-size:10px">Yes</button>
+              </main>
+              <aside style="width:150px">
+                <button id="inputFalse" style="width:30px;height:20px;font-size:10px">No</button>
+              </aside>
+            </div>
+          </div>
+          <div style="position:relative">
+            <button id="turn" style="width:200px; height:50px; font-size: 30px; margin-top:25px"> Start Turn! </button>
+          </div>
+        </div>
+        <div id="info" style="margin-top:120px;">
+          <h2 style="width:365px;">Game Info</h2>
+        </div>
+      </aside>
+    </div>
 
-      <button id="turn" style="width:200px; height:50px; font-size: 30px"> Start Turn! </button>
-      <button id="showCards" style="margin-top:0px; margin-left:250px; font-size:20px; height:35px">Show Cards</button>
-      <table id="award" style="margin-left:250px; margin-top:50px; position:absolute">
-        <th> Award Horse </th>
-        <th id="4"> 4 </th>
-        <th id="6"> 6 </th>
-        <th id="8"> 8 </th>
-        <th id="10"> 10 </th>
-        <th id="15"> 15 </th>
-        <th id="20"> 20 </th>
-        <th id="25"> 25 </th>
-        <th id="30"> 30 </th>
-        <th id="35"> 35 </th>
-        <th id="40"> 40 </th>
-        <th id="45"> 45 </th>
-        <th id="50"> 50 </th>
-        <th id="55"> 55 </th>
-        <th id="60"> 60 </th>
-      </table>
-    </layer>
 
 
-    <form id="myForm">
-      <p> Select a cash in option<p>
-      <div>
-        <input type="radio" id="3Infantry" name="cards" value="3I"
-           checked>
-        <label for="3Infantry">3 Infantry</label>
-      </div>
+    <div style="display: flex; position:relative">
+      <main style="width:300px">
+        <div style="position:relative">
+          <div style="position:relative;">
+            <form id="myForm">
+              <div>
+                <p style="color:white; opacity:0"> Select a cash in option<p>
+              </div>
+              <div>
+                <input type="radio" id="3Infantry" name="cards" value="3I">
+                <label for="3Infantry">3 Infantry</label>
+              </div>
 
-      <div>
-        <input type="radio" id="3Horse" name="cards" value="3H">
-        <label for="3Horse">3 Horse</label>
-      </div>
+              <div>
+                <input type="radio" id="3Horse" name="cards" value="3H">
+                <label for="3Horse">3 Horse</label>
+              </div>
 
-      <div>
-        <input type="radio" id="3Cannon" name="cards" value="3C">
-        <label for="3Cannon">3 Cannon</label>
-      </div>
+              <div>
+                <input type="radio" id="3Cannon" name="cards" value="3C">
+                <label for="3Cannon">3 Cannon</label>
+              </div>
 
-      <div>
-        <input type="radio" id="1ofEach" name="cards" value="1E">
-        <label for="1ofEach">1 of Each</label>
-      </div>
+              <div>
+                <input type="radio" id="1ofEach" name="cards" value="1E">
+                <label for="1ofEach">1 of Each</label>
+              </div>
 
-      <div>
-        <input type="radio" id="esc" name="cards" value="esc">
-        <label for="esc">Cancel</label>
-      </div>
+              <div>
+                <input type="radio" id="esc" name="cards" value="esc">
+                <label for="esc">Cancel</label>
+              </div>
 
-      <div>
-        <button type="submit" style="margin-top:10px; font-size:20px;width:100px;height:50px">Submit</button>
-      </div>
-    </form>
+              <div>
+                <button type="submit" style="margin-top:10px; font-size:20px;width:100px;height:50px">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+      <aside style="width:200px; flex: 1;">
+        <div>
+          <button id="showCards" style="font-size:20px; height:35px">Show Cards</button>
+        </div>
+        <div>
+          <table id="award" style="position:absolute; margin-top:50px">
+            <th> Award Horse </th>
+            <th id="4"> 4 </th>
+            <th id="6"> 6 </th>
+            <th id="8"> 8 </th>
+            <th id="10"> 10 </th>
+            <th id="15"> 15 </th>
+            <th id="20"> 20 </th>
+            <th id="25"> 25 </th>
+            <th id="30"> 30 </th>
+            <th id="35"> 35 </th>
+            <th id="40"> 40 </th>
+            <th id="45"> 45 </th>
+            <th id="50"> 50 </th>
+            <th id="55"> 55 </th>
+            <th id="60"> 60 </th>
+          </table>
+        </div>
+      </aside>
+    </div>
 
 
 
-    <layer id="uncluttered">
+    <div class="uncluttered">
       <p style="margin-top:80px"> Uncluttered Board </p>
       <img src="gameBoard.jpg" alt="Game Board"
         height="600" width="1000" style="margin-top:5px"></img>
-    </layer>
+    </div>
 
     <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.5.js"></script>
     <script language="javascript" src="loadGameJava.js"></script>

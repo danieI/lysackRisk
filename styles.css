@@ -78,3 +78,15 @@ button[class^="x"]{
   text-align: center;
   background: #000
 }
+
+.jesse{
+  font-size: 20px;
+}
+
+.inLine {
+  position: relative;
+}
+
+.info{
+  width:365px;
+}
