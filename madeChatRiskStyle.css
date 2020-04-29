@@ -29,6 +29,7 @@
 
 .list {
   background: linear-gradient(to right, #6093ac, #29a329);
+  max-width: 260px;
 }
 
 .listObject {

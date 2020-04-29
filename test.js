@@ -9,6 +9,8 @@ const pubnub = new PubNub({
 });
 
 
+
+
 function subscribeNewPubnub(channel){
   pubnub.subscribe({
     channels: [channel],
@@ -79,5 +81,13 @@ setTimeout(function(){
   pastMessages(channel);
   document.getElementById("sendChat").addEventListener("click", function(){
     publishPubnub(channel, document.getElementById("chatMessage").value);
+    document.getElementById("chatMessage").value = null;
   });
+
+  document.getElementById("backButton").addEventListener("click", function(){
+    location.href = "chatOptions.html";
+    reresize();
+  });
+  var height = document.getElementsByTagName("html")[0].offsetHeight;
+  window.parent.postMessage(["setHeight", height], "*");
 }, 500);

@@ -7,6 +7,7 @@ while(!temp){
   users.forEach((u, i) => {
     if(u.id == name){
       user = u;
+      localStorage.setItem("user", JSON.stringify(user));
       temp = true;
     }
   });
@@ -14,6 +15,8 @@ while(!temp){
 
 
 const divider = document.getElementById("buttonList");
+
+
 
 
 users.forEach((u,i) => {
@@ -25,12 +28,11 @@ users.forEach((u,i) => {
     divider.appendChild(b);
     document.getElementById(u.name).innerHTML = u.name;
     document.getElementById(u.name).addEventListener("click", function(){
-      localStorage.setItem("user", JSON.stringify(users[i]));
+      location.href = "test.html";
       var names = [users[i].id + users[i].name, user.id + user.name];
       names = names.sort();
       var chan = names[0] + names[1];
       localStorage.setItem("riskChatChannel", chan);
-      location.href = "test.html";
     });
   }
 });
@@ -39,3 +41,12 @@ document.getElementById("groupChat").addEventListener("click", function(){
   localStorage.setItem("riskChatChannel", groupChat);
   location.href = "test.html";
 });
+
+document.getElementById("closeChat").addEventListener("click", function(){
+  window.parent.postMessage(["close", null], "*");
+});
+
+window.onload = function(){
+  var height = document.getElementsByTagName("html")[0].offsetHeight;
+  window.parent.postMessage(["setHeight", height], "*");
+}
