@@ -3,6 +3,7 @@
   <head>
     <title> Risk </title>
     <link rel="stylesheet" href="styles.css"></link>
+    <link href="madeChatRiskStyle.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <div style="width:1365px">
@@ -18,6 +19,7 @@
         </layer>
 
         <button class="openChat" id="openChat" style="margin-top:-600px"><p style="margin-top:-7px">Open Chat</p></button>
+        <div id="div"></div>"
 
         <layer>
           <div class="countryButtons" style="margin-top:20px;">
@@ -211,7 +213,7 @@
           <p id="playerTurn" style="width:365px; margin-left:10px"></p>
           <p id="instructions" style="width:365px; margin-left:10px"></p>
         </div>
-        <div style="margin-top:40">
+        <div style="margin-top:40" id="inputDiv" class="inputDiv">
           <h2 style="width:365">Player Input</h2>
           <p id="inputText" style="width:350px"></p>
           <div id="promptBox">
@@ -242,9 +244,6 @@
     </div>
 
     <div style="display:flex">
-      <main style="width:150px">
-        <button id="addPlayer" style="margin-top: 20px;width:100px; height:30px; font-size:15px"> Add Player </button>
-      </main>
       <aside style="width:180px">
         <button id="doneAdding" style="position:relative;margin-top: 20px;width:100px; height:30px; font-size:15px">Start Game</button>
         <p style="position:relative">Only click when all players have been added</p>

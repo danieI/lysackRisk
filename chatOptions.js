@@ -1,17 +1,7 @@
-var users = JSON.parse(localStorage.getItem("users"));
-var user;
+var users = JSON.parse(localStorage.getItem("users")).users;
+var user = JSON.parse(localStorage.getItem("user"));
 var name;
-var temp = false;
-while(!temp){
-  name = prompt("Enter username");
-  users.forEach((u, i) => {
-    if(u.id == name){
-      user = u;
-      localStorage.setItem("user", JSON.stringify(user));
-      temp = true;
-    }
-  });
-}
+
 
 
 const divider = document.getElementById("buttonList");

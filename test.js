@@ -1,4 +1,4 @@
-var users = JSON.parse(localStorage.getItem("users"));
+var users = JSON.parse(localStorage.getItem("users")).users;
 var user = JSON.parse(localStorage.getItem("user"));
 
 const uuid = user.id;
