@@ -157,6 +157,7 @@ function setUpCountry(country){
 
 function newGame(){
   console.log("v.v start of new Game");
+  openB.hidden = true;
   document.getElementById("confirmBox").hidden = true;
   document.getElementById("promptBox").hidden = true;
   document.getElementById("gameCode").innerHTML = "Game Code: " + password;
@@ -243,7 +244,7 @@ function createPlayers(){          //////////adjust to haveing a const player va
           if(JSON.parse(event.message.content).data == "doneNewPlayers" && event.message.sender != uuid){
             document.getElementById("addPlayer").removeEventListener("click", createNewPlayer);
             document.getElementById("doneAdding").removeEventListener("click",doneAdding);
-
+            openB.hidden = false;
             resolve();
           }
       }
@@ -269,6 +270,7 @@ function createPlayers(){          //////////adjust to haveing a const player va
       var tempBool = false;
       tempBool = await confirmBox("There are " + players.length + " players in the\ngame right now. Are you done adding players?");
       if (tempBool){
+        openB.hidden = false;
         document.getElementById("addPlayer").removeEventListener("click", createNewPlayer);
         document.getElementById("doneAdding").removeEventListener("click",doneAdding);
         pubnub.publish({
@@ -476,3 +478,76 @@ pubnub.addListener({
 });
 
 //make the password display when game loads
+
+
+
+
+const openB = document.getElementById("openChat");
+openB.addEventListener("click", function(){
+  console.log("temp");
+  var frame = document.createElement("iFrame");
+  frame.style.width = "280px";
+  frame.src="chatOptions.html";
+  frame.className="iFrameClass";
+  frame.id="iFrameID";
+  document.getElementById("div").appendChild(frame);
+  localStorage.setItem("user", JSON.stringify(user));
+  window.addEventListener('message', function(e) {
+  var eventName = e.data[0];
+  var data = e.data[1];
+  switch(eventName) {
+   case 'setHeight':
+   console.log("inside");
+   var height = String(data) + "px";
+   console.log(height);
+   frame.style.height = height;
+   break;
+   case 'close':
+   frame.parentNode.removeChild(frame);
+   break;
+   }
+   // Make the DIV element draggable:
+   dragElement(document.getElementById("iFrameID"));
+
+   function dragElement(elmnt) {
+     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+     if (document.getElementById(elmnt.id)) {
+       // if present, the header is where you move the DIV from:
+       document.getElementById(elmnt.id).onmousedown = dragMouseDown;
+     } else {
+       // otherwise, move the DIV from anywhere inside the DIV:
+       elmnt.onmousedown = dragMouseDown;
+     }
+
+     function dragMouseDown(e) {
+       e = e || window.event;
+       e.preventDefault();
+       // get the mouse cursor position at startup:
+       pos3 = e.clientX;
+       pos4 = e.clientY;
+       document.onmouseup = closeDragElement;
+       // call a function whenever the cursor moves:
+       document.onmousemove = elementDrag;
+     }
+
+     function elementDrag(e) {
+       e = e || window.event;
+       e.preventDefault();
+       // calculate the new cursor position:
+       pos1 = pos3 - e.clientX;
+       pos2 = pos4 - e.clientY;
+       pos3 = e.clientX;
+       pos4 = e.clientY;
+       // set the element's new position:
+       elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+       elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+     }
+
+     function closeDragElement() {
+       // stop moving when mouse button is released:
+       document.onmouseup = null;
+       document.onmousemove = null;
+     }
+   }
+ }, false);
+});
