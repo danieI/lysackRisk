@@ -28,7 +28,7 @@ function addMessage(sender, message){
     msg.className = "rightText";
   } else {
     outerDiv.className = "leftOuterDiv";
-    innerDiv.className = "rightTextName";
+    innerDiv.className = "leftTextName";
     msg.className = "leftText";
   }
   innerDiv.innerHTML = sender;
@@ -36,6 +36,8 @@ function addMessage(sender, message){
   innerDiv.appendChild(msg);
   outerDiv.appendChild(innerDiv);
   document.getElementById("chatPage").appendChild(outerDiv);
+  var elem = document.getElementById('chatPage');
+  elem.scrollTop = elem.scrollHeight;
 }
 
 function pastMessages(channelr){
@@ -86,7 +88,6 @@ setTimeout(function(){
 
   document.getElementById("backButton").addEventListener("click", function(){
     location.href = "chatOptions.html";
-    reresize();
   });
   var height = document.getElementsByTagName("html")[0].offsetHeight;
   window.parent.postMessage(["setHeight", height], "*");
