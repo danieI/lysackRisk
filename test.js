@@ -31,7 +31,11 @@ function addMessage(sender, message){
     innerDiv.className = "leftTextName";
     msg.className = "leftText";
   }
-  innerDiv.innerHTML = sender;
+  users.forEach( u => {
+    if(u.id == sender){
+      innerDiv.innerHTML = u.name;
+    }
+  });
   msg.innerHTML = message;
   innerDiv.appendChild(msg);
   outerDiv.appendChild(innerDiv);

@@ -6,7 +6,7 @@
   color: white;
   text-transform: uppercase;
   text-decoration: none;
-  background: #29a329;
+  background: #8E8E93;
   padding: 20px;
   border-radius: 50px;
   display: inline-block;
@@ -25,10 +25,11 @@
 
 .title {
   font-size: 22px;
+  color: white;
 }
 
 .list {
-  background: linear-gradient(to right, #6093ac, #29a329);
+  background: linear-gradient(to right, #000000, #8E8E93);
   max-width: 260px;
   z-index: 10;
 }
@@ -37,18 +38,20 @@
   z-index: 5;
   cursor: move;
   position: absolute;
+  background: linear-gradient(to right, #000000, #949498);
 }
 
 .listObject {
-  background-color: #29a329;
+  background-color: #949498;
   opacity: 0.8;
   width:260px;
   height: 50px;
   padding-bottom:5%;
+  color: white;
 }
 
 .listObject:hover {
-  background: linear-gradient(to right, #29a329, #6093ac);
+  background: linear-gradient(to right, #8E8E93, #000000);
   opacity: 1;
   transition: all 0.4s ease 0s;
 }
@@ -71,7 +74,7 @@
   color: white;
   text-transform: uppercase;
   text-decoration: none;
-  background: #29a329;
+  background: #5eba5e;
   border-radius: 15px;
   display: inline-block;
   border: none;
@@ -85,10 +88,15 @@
 }
 
 .fullChatPage {
-  background: linear-gradient(to right, #808080, #d9d9d9, #808080);
+  /* background: linear-gradient(to right, #808080, #d9d9d9, #808080); */
+  background: linear-gradient(to right, #000000, #8E8E93);
   display: flex;
   flex-direction: column-reverse;
   z-index: 10;
+}
+
+::-webkit-scrollbar {
+  background-color: #87878c;
 }
 
 .chatPage {
@@ -105,7 +113,7 @@
 }
 
 .leftTextName {
-  background-color: #ed4337;
+  background-color: #8E8E93;
   border-radius: 7px;
   width:72%;
   padding-left:2px;
@@ -121,7 +129,7 @@
 }
 
 .rightTextName {
-  background-color: #29a329;
+  background-color: #53d769;
   border-radius: 7px;
   text-align: right;
   width:72%;
