@@ -194,7 +194,7 @@ function setUpCountry(country){
 
 async function newGame(){
   console.log("v.v start of new Game");
-  openB.hidden = true;
+  openB.style.visibility = "hidden";
   document.getElementById("confirmBox").hidden = true;
   document.getElementById("promptBox").hidden = true;
   document.getElementById("gameCode").innerHTML = "Game Code: " + password;
@@ -293,7 +293,7 @@ function createPlayers(){
               users.push(p.user);
             });
             localStorage.setItem("users", JSON.stringify({users:users}));
-            openB.hidden = false;
+            openB.style.visibility = "visible";
             resolve();
           }
       }
@@ -336,7 +336,7 @@ function createPlayers(){
           users.push(p.user);
         });
         localStorage.setItem("users", JSON.stringify({users:users}));
-        openB.hidden = false;
+        openB.style.visibility = "visible";
         document.getElementById("doneAdding").removeEventListener("click",doneAdding);
         pubnub.publish({
           channel: "pubnub_onboarding_channel",
@@ -568,6 +568,7 @@ pubnub.addListener({
 
 const openB = document.getElementById("openChat");
 openB.addEventListener("click", function(){
+  openB.style.visibility = "hidden";
   console.log("temp");
   var frame = document.createElement("iFrame");
   frame.style.width = "280px";
@@ -588,6 +589,7 @@ openB.addEventListener("click", function(){
    break;
    case 'close':
    frame.parentNode.removeChild(frame);
+   openB.style.visibility = "visible";
    break;
    }
    // Make the DIV element draggable:

@@ -13,6 +13,7 @@
   border: none;
   transition: all 0.4s ease 0s;
   opacity: 0.8;
+  /* visibility: hidden; */
 }
 
 .openChat:hover {
@@ -37,8 +38,10 @@
 .iFrameClass {
   z-index: 5;
   cursor: move;
-  position: absolute;
+  position: fixed;
   background: linear-gradient(to right, #000000, #949498);
+  right: 0;
+  top: 0;
 }
 
 .listObject {
@@ -125,7 +128,7 @@
   width:100%;
   padding-right:25%;
   position:relative;
-  top: 180px;
+  top: 195px;
 }
 
 .rightTextName {
@@ -142,7 +145,7 @@
   width:100%;
   padding-left:25%;
   position:relative;
-  top: 180px;
+  top: 195px;
 }
 
 .rightText {

@@ -1047,6 +1047,7 @@ window.addEventListener("beforeunload", function(e){
 
   const openB = document.getElementById("openChat");
 openB.addEventListener("click", function(){
+  openB.style.visibility = "hidden";
   console.log("temp");
   var frame = document.createElement("iFrame");
   frame.style.width = "280px";
@@ -1067,6 +1068,7 @@ openB.addEventListener("click", function(){
    break;
    case 'close':
    frame.parentNode.removeChild(frame);
+   openB.style.visibility = "visible";
    break;
    }
    // Make the DIV element draggable:
