@@ -6,8 +6,6 @@ var playerNum = 0;
 var done = [];
 var numTroops = [];
 var playerIndex;
-var firstToLoad = false;
-var inInputBox = false;
 var countryList = JSON.parse('[{"name":"alaska","whoOwns":"","troops":0,"adjascent":["alberta","nwt","kamchatka"]},{"name":"nwt","whoOwns":"","troops":0,"adjascent":["alaska","greenland","alberta","ontario"]},{"name":"greenland","whoOwns":"","troops":0,"adjascent":["quebec","ontario","nwt","iceland"]},{"name":"alberta","whoOwns":"","troops":0,"adjascent":["alaska","nwt","ontario","WesternUS"]},{"name":"ontario","whoOwns":"","troops":0,"adjascent":["alberta","nwt","greenland","quebec","EasternUS","WesternUS"]},{"name":"quebec","whoOwns":"","troops":0,"adjascent":["ontario","greenland","EasternUS"]},{"name":"WesternUS","whoOwns":"","troops":0,"adjascent":["alberta","ontario","EasternUS","centralAmerica"]},{"name":"EasternUS","whoOwns":"","troops":0,"adjascent":["WesternUS","ontario","quebec","centralAmerica"]},{"name":"centralAmerica","whoOwns":"","troops":0,"adjascent":["WesternUS","EasternUS","venezuela"]},{"name":"venezuela","whoOwns":"","troops":0,"adjascent":["centralAmerica","peru","brazil"]},{"name":"peru","whoOwns":"","troops":0,"adjascent":["venezuela","brazil","argentina"]},{"name":"brazil","whoOwns":"","troops":0,"adjascent":["northAfrica","argentina","peru","venezuela"]},{"name":"argentina","whoOwns":"","troops":0,"adjascent":["peru","brazil"]},{"name":"madagascar","whoOwns":"","troops":0,"adjascent":["southAfrica","eastAfrica"]},{"name":"southAfrica","whoOwns":"","troops":0,"adjascent":["madagascar","congo","eastAfrica"]},{"name":"congo","whoOwns":"","troops":0,"adjascent":["northAfrica","eastAfrica","southAfrica"]},{"name":"eastAfrica","whoOwns":"","troops":0,"adjascent":["northAfrica","egypt","congo","madagascar","southAfrica"]},{"name":"northAfrica","whoOwns":"","troops":0,"adjascent":["brazil","westernEurope","southernEurope","egypt","eastAfrica","congo"]},{"name":"egypt","whoOwns":"","troops":0,"adjascent":["northAfrica","southernEurope","middleEast","eastAfrica"]},{"name":"westernEurope","whoOwns":"","troops":0,"adjascent":["greatBritian","northernEurope","southernEurope","northAfrica"]},{"name":"southernEurope","whoOwns":"","troops":0,"adjascent":["westernEurope","northernEurope","ukraine","middleEast","egypt","northAfrica"]},{"name":"northernEurope","whoOwns":"","troops":0,"adjascent":["westernEurope","greatBritian","scandinavia","ukraine","southernEurope"]},{"name":"greatBritian","whoOwns":"","troops":0,"adjascent":["iceland","scandinavia","northernEurope","westernEurope"]},{"name":"iceland","whoOwns":"","troops":0,"adjascent":["greenland","scandinavia","greatBritian"]},{"name":"scandinavia","whoOwns":"","troops":0,"adjascent":["iceland","ukraine","northernEurope","greatBritian"]},{"name":"ukraine","whoOwns":"","troops":0,"adjascent":["scandinavia","ural","afghanistan","middleEast","southernEurope","northernEurope"]},{"name":"westernAustralia","whoOwns":"","troops":0,"adjascent":["indonesia","newGuinea","easternAustralia"]},{"name":"easternAustralia","whoOwns":"","troops":0,"adjascent":["westernAustralia","newGuinea"]},{"name":"newGuinea","whoOwns":"","troops":0,"adjascent":["indonesia","easternAustralia","westernAustralia"]},{"name":"indonesia","whoOwns":"","troops":0,"adjascent":["siam","newGuinea","westernAustralia"]},{"name":"siam","whoOwns":"","troops":0,"adjascent":["india","china","indonesia"]},{"name":"india","whoOwns":"","troops":0,"adjascent":["middleEast","afghanistan","china","siam"]},{"name":"middleEast","whoOwns":"","troops":0,"adjascent":["egypt","southernEurope","ukraine","afghanistan","india"]},{"name":"afghanistan","whoOwns":"","troops":0,"adjascent":["ukraine","ural","china","india","middleEast"]},{"name":"china","whoOwns":"","troops":0,"adjascent":["afghanistan","ural","siberia","mongolia","siam","india"]},{"name":"japan","whoOwns":"","troops":0,"adjascent":["mongolia","kamchatka"]},{"name":"mongolia","whoOwns":"","troops":0,"adjascent":["siberia","irkutsk","kamchatka","japan","china"]},{"name":"siberia","whoOwns":"","troops":0,"adjascent":["ural","yakutsk","irkutsk","mongolia","china"]},{"name":"ural","whoOwns":"","troops":0,"adjascent":["ukraine","siberia","china","afghanistan"]},{"name":"irkutsk","whoOwns":"","troops":0,"adjascent":["siberia","yakutsk","kamchatka","mongolia"]},{"name":"yakutsk","whoOwns":"","troops":0,"adjascent":["siberia","kamchatka","irkutsk"]},{"name":"kamchatka","whoOwns":"","troops":0,"adjascent":["yakutsk","alaska","japan","mongolia","irkutsk"]}]');
 var countryNames = [];
 countryList.forEach(x => {
@@ -58,12 +56,7 @@ function confirmBox(text){
       document.getElementById("inputFalse").removeEventListener("click", falseClick);
       document.getElementById("confirmBox").hidden = true;
       document.getElementById("inputText").innerHTML = "";
-      if(constPlayer != null){
-        document.getElementById("inputDiv").style.border = "";
-        document.getElementById("inputDiv").style.paddingBottom = "10px";
-      }
-      inInputBox = false;
-      document.getElementById("inputFalse").blur();
+      console.log("event Listener closed for check");
       resolve(true);
     }
     function falseClick(){
@@ -71,27 +64,13 @@ function confirmBox(text){
       document.getElementById("inputFalse").removeEventListener("click", falseClick);
       document.getElementById("confirmBox").hidden = true;
       document.getElementById("inputText").innerHTML = "";
-      if(constPlayer != null){
-        document.getElementById("inputDiv").style.border = "";
-        document.getElementById("inputDiv").style.paddingBottom = "10px";
-      }
-      inInputBox = false;
-      document.getElementById("inputFalse").blur();
       resolve(false);
     }
-    inInputBox = true;
     document.getElementById("confirmBox").hidden = false;
     document.getElementById("inputText").innerHTML = text;
-    if(constPlayer != null){
-      document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
-      document.getElementById("inputDiv").style.paddingBottom = "30px";
-    }
-    document.getElementById("inputFalse").focus();
-    function addLists(){
-      document.getElementById("inputTrue").addEventListener("click", trueClick);
-      document.getElementById("inputFalse").addEventListener("click", falseClick);
-    }
-    setTimeout(addLists, 20);
+    document.getElementById("inputTrue").addEventListener("click", trueClick);
+    document.getElementById("inputFalse").addEventListener("click", falseClick);
+    console.log("eventListener added for confirm");
   });
 }
 
@@ -103,13 +82,8 @@ function promptBox(text){
       document.getElementById("inputContentSubmit").removeEventListener("click", submitClick);
       document.getElementById("promptBox").hidden = true;
       document.getElementById("inputText").innerHTML = "";
-      if(constPlayer != null){
-        document.getElementById("inputDiv").style.border = "";
-      }
       var content = document.getElementById("inputContent").value;
       document.getElementById("inputContent").value = "";
-      document.getElementById("inputContent").blur();
-      inInputBox = false;
       resolve(content);
     }
     function submitEnter(event){
@@ -118,24 +92,14 @@ function promptBox(text){
         document.removeEventListener("keydown", submitEnter)
         document.getElementById("promptBox").hidden = true;
         document.getElementById("inputText").innerHTML = "";
-        if(constPlayer != null){
-          document.getElementById("inputDiv").style.border = "";
-        }
         var content = document.getElementById("inputContent").value;
         console.log(content);
         document.getElementById("inputContent").value = "";
-        document.getElementById("inputContent").blur();
-        inInputBox = false;
         resolve(content);
       }
     }
-    inInputBox = true;
     document.getElementById("promptBox").hidden = false;
     document.getElementById("inputText").innerHTML = text;
-    if(constPlayer != null){
-      document.getElementById("inputDiv").style.border = "thin solid " + constPlayer.player;
-    }
-    document.getElementById("inputContent").focus();
     document.getElementById("inputContentSubmit").addEventListener("click", submitClick);
     document.addEventListener("keydown", submitEnter)
   });
@@ -191,43 +155,22 @@ function setUpCountry(country){
 
 
 
-async function newGame(){
+function newGame(){
   console.log("v.v start of new Game");
+  openB.hidden = true;
   document.getElementById("confirmBox").hidden = true;
   document.getElementById("promptBox").hidden = true;
   document.getElementById("gameCode").innerHTML = "Game Code: " + password;
   document.getElementById("playerTurn").innerHTML = "Welcome " + user.name;
-  document.getElementById("instructions").style.border = "thin solid black";
-  document.getElementById("instructions").style.padding = "3px 3px 3px 3px";
-  addInstructions("Wait untill all players have entered game");
   console.log("v start of newGame");
-  var firstToLoadText = localStorage.getItem("amITheFirstPlayer");
-  console.log(firstToLoad);
-  if(firstToLoadText != "yes"){
-    firstToLoad = false;
-    var response = await pubnub.getSpace({spaceId: String(password)});
-    var responsePotentials = JSON.parse(response.data.custom.data).potentialPlayers;
-    players = JSON.parse(response.data.custom.data).newGamePlayers;
-    console.log(players);
-    console.log(responsePotentials);
-    potentialPlayers.forEach(ply => {
-      if(!responsePotentials.includes(ply)){
-        addInfo("Player " + ply + " has joined the game");
-      }
-    });
-    potentialPlayers = responsePotentials;
-    document.getElementById("doneAdding").hidden = true;
-  } else {
-    firstToLoad = true;
-    localStorage.setItem("amITheFirstPlayer", "");
-  }
-
-    createPlayers()
+  createPlayers()
     .then(() => {
-      console.log("TWO")
       var sortByCodesValues = [];
       players.forEach(x => {
         sortByCodesValues.push(x.code);
+        if(user.id == x.uuid){
+          constlayer = x;
+        }
       });
       sortByCodesValues.sort();
       var unsortedPlayers = players;
@@ -248,7 +191,7 @@ async function newGame(){
     .then(() => {
       let createdGame = new Game(password, countryList, players, 4, 0);
       localStorage.setItem(password, JSON.stringify(createdGame));
-      pubnub.updateSpace({id:String(createdGame.password),name:"risk",custom:{data:JSON.stringify(createdGame)},include:{customFields: true}})
+      pubnub.createSpace({id:String(createdGame.password),name:"risk",custom:{data:JSON.stringify(createdGame)},include:{customFields: true}})
         .then(response => {
           console.log(response);
           alert("The game code is " + createdGame.password);
@@ -263,53 +206,56 @@ async function newGame(){
 
 
 
-function createPlayers(){
+function createPlayers(){          //////////adjust to haveing a const player variable? Disable unauthorized clicks
   return new Promise(async (resolve) => {
     console.log("insideNewPlayers");
-
+    async function getPlayerCode(){
+      console.log("get player code");
+      var code = "1";
+      var playerCodes = [];
+      for (var i = 0; i < players.length; i++){
+        playerCodes.push(players[i].code);
+      }
+      console.log(code + " code");
+      console.log(!(code.length == 4));
+      while(!(code.length == 4) || (isNaN(code)) || playerCodes.includes(Number(code))){
+        console.log("inside while");
+        code = await promptBox("What do you wish your code to be? \n must be 4 digits");
+        console.log(code);
+        console.log("code");
+      }
+      code = Number(code);
+      alert("your player code is " + code + " DON'T FORGET IT");
+      return code;
+    }
     async function getPlayerColor(){
-      return new Promise(async (resolve) => {
-        var playerColor = "";
-        while(!(potentialPlayers.includes(playerColor.toLowerCase()))){
-          playerColor = await promptBox("Choose a color between \n" + potentialPlayers);
-          console.log(playerColor);
-        }
-        potentialPlayers.splice(potentialPlayers.indexOf(playerColor), 1);
-        playerColor = playerColor.toLowerCase();
-        console.log(playerColor);
-        console.log(playerColor + " send??");
-        resolve(playerColor);
-      });
+      var playerColor = "";
+      while(!(potentialPlayers.includes(playerColor.toLowerCase()))){
+        playerColor = await promptBox("Choose a color between \n" + potentialPlayers);
+      }
+      potentialPlayers.splice(potentialPlayers.indexOf(playerColor), 1);
+      playerColor = playerColor.toLowerCase();
+      return playerColor;
     }
 
     var newPlayer = true;
     pubnub.addListener({
       message: function(event){
           if(JSON.parse(event.message.content).data == "doneNewPlayers" && event.message.sender != uuid){
+            document.getElementById("addPlayer").removeEventListener("click", createNewPlayer);
+            document.getElementById("doneAdding").removeEventListener("click",doneAdding);
+            openB.hidden = false;
             resolve();
           }
       }
     });
     async function createNewPlayer(){
       if (newPlayer == true && potentialPlayers.length != 0){
-        var playerColor;
-        await getPlayerColor().then(response => playerColor = response);
-        console.log(user);
-        console.log(playerColor)
-        let playerOne = new Player(user.id, playerColor, 0,0,0);
-        console.log(playerOne);
-        constPlayer = playerOne;
-        document.getElementById("playerTurn").innerHTML = "Welcome " + user.name + " you are " + constPlayer.player.toUpperCase();
-        document.getElementById("instructions").style.border = "thin solid " + constPlayer.player;
+        var playerCode;
+        let playerOne = new Player(await getPlayerCode(), await getPlayerColor(), 0,0,0);
         players.push(playerOne);
-        await pubnub.updateSpace({id:String(password), name:"risk",custom:{data:JSON.stringify({potentialPlayers: potentialPlayers, newGamePlayers: players})},include:{customFields: true}})
-          .then(response => {
-            console.log(JSON.parse(response.data.custom.data));
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        addInfo("Player " + constPlayer.player + " has joined the game")
+        document.getElementById("gameCode").innerHTML = "Game code: " + password;
+        addInfo("Player " + players[players.length - 1].player + " has joined the game")
         pubnub.publish({
           channel: "pubnub_onboarding_channel",
           message: {"sender": uuid, "content":JSON.stringify({player:playerOne})}
@@ -324,6 +270,8 @@ function createPlayers(){
       var tempBool = false;
       tempBool = await confirmBox("There are " + players.length + " players in the\ngame right now. Are you done adding players?");
       if (tempBool){
+        openB.hidden = false;
+        document.getElementById("addPlayer").removeEventListener("click", createNewPlayer);
         document.getElementById("doneAdding").removeEventListener("click",doneAdding);
         pubnub.publish({
           channel: "pubnub_onboarding_channel",
@@ -336,9 +284,7 @@ function createPlayers(){
     }
     console.log("should create new player");
     createNewPlayer();
-    if(firstToLoad){
-      document.getElementById("doneAdding").addEventListener("click",doneAdding);
-    }
+    document.getElementById("doneAdding").addEventListener("click",doneAdding);
   });
 }
 
@@ -351,7 +297,7 @@ function placeReinforcements(players){
     numTroops.length = players.length;
     switch (num) {
       case 2:
-        numTroops = numTroops.fill(70);
+        numTroops = numTroops.fill(40);
         break;
       case 3:
         numTroops = numTroops.fill(35);
@@ -382,14 +328,16 @@ function placeReinforcements(players){
       doneCheck.push(true);
     }
     async function addPlayerClick(){
-      if (playerNames.indexOf(event.target.className) == playerCodes.indexOf(constPlayer.code)){
+      var codeCheck = await promptBox("Enter player code");
+      codeCheck = Number(codeCheck);
+      if (playerNames.indexOf(event.target.className) == playerCodes.indexOf(codeCheck)){
+        var player = players[playerNames.indexOf(event.target.className)];
         var index = countryNames.indexOf(event.target.id);
         var troopIndex = playerNames.indexOf(event.target.className);
         var possibleInputs = ["add", "remove"];
         var action = "";
         while (!possibleInputs.includes(action)){
-          await promptBox("Would you like to add or remove troops?").then(response => action = response);
-          console.log("playerchose " + action);
+          action = await promptBox("Would you like to add or remove troops?");
           action = action.toLowerCase();
         }
         numToPlace = "blah";
@@ -400,23 +348,19 @@ function placeReinforcements(players){
         if (action == "add" && numToPlace <= numTroops[troopIndex] && numToPlace >= 0){
           countryList[index].troops += numToPlace;
           numTroops[troopIndex] -= numToPlace;
-          if (numTroops[troopIndex] == 0){
-            done[troopIndex] = await confirmBox("Are you done placing your troops?");
-          }
           setUpCountry(countryList[index]);
           update([countryList[index]], false, troopIndex);
         } else if (action == "remove" && numToPlace <= countryList[index].troops && numToPlace >=0) {
           countryList[index].troops -= numToPlace;
           numTroops[troopIndex] += numToPlace;
-          if (numTroops[troopIndex] == 0){
-            done[troopIndex] = await confirmBox("Are you done placing your troops?");
-          }
           setUpCountry(countryList[index]);
           update([countryList[index]], false, troopIndex);
         } else {
           addInformation("Invalid troop number");
         }
-
+        if (numTroops[troopIndex] == 0){
+          done[troopIndex] = await confirmBox("Are you done placing your troops?");
+        }
         if (JSON.stringify(done) == JSON.stringify(doneCheck)){
           countryList.forEach(x=> {
             document.getElementById(x.name).removeEventListener("click", addPlayerClick);
@@ -426,7 +370,7 @@ function placeReinforcements(players){
       }
     }
     for(var i = 0; i < countryList.length; i++){
-      var x = countryList[i];
+      countryList[i] = x;
       document.getElementById(x.name).addEventListener("click", addPlayerClick);
     };
   });
@@ -438,9 +382,6 @@ function createCountries(players){
   return new Promise((resolve, reject) => {
     var player = players[playerNum % players.length];
     addInstructions(players[playerNum%players.length].player + "'s turn to choose a country");
-    if(constPlayer.player == player.player){
-      addInstructions(constPlayer.player + " its YOUR TURN to choose a country");
-    }
     var countryNameList = [];
     for (var i = 0; i < countryList.length; i++){
       countryNameList.push(countryList[i].name);
@@ -449,7 +390,7 @@ function createCountries(players){
     async function countryClick(){
       if (playerNum < countryList.length){
         player = players[playerNum % players.length];
-        var code = constPlayer.code;
+        var code = await promptBox("Player " + player.player + " enter your code");
         if (code == player.code && event.target.className == ""){
           var ind = countryNameList.indexOf(event.target.id);
           countryList[ind].whoOwns = player.player;
@@ -483,15 +424,8 @@ function createCountries(players){
 
 
 function loadGame(){
-  localStorage.setItem("riskLoadGameCode", String(password));
   window.open("loadGame.html");
-  pubnub.publish({
-    channel: "pubnub_onboarding_channel",
-    message: {"sender": uuid, "content":JSON.stringify({data:"openLoadGame"})}
-  }, function(status, response) {
-      //handle error
-  });
-  setTimeout(() => window.close(), 500);
+  //setTimeout(window.close(), 500);
 }
 
 
@@ -539,12 +473,79 @@ pubnub.addListener({
       potentialPlayers.splice(potentialPlayers.indexOf(data.player.player), 1);
       // document.getElementById("gameCode").innerHTML = "Game code: " + password;
       addInfo("Player " + players[players.length - 1].player + " has joined the game");
-    } else if(JSON.parse(event.message.content).data == "openLoadGame" && event.message.sender != uuid){
-      localStorage.setItem("riskLoadGameCode", String(password));
-      window.open("loadGame.html");
-      setTimeout(() => window.close(), 500);
     }
   }
 });
 
 //make the password display when game loads
+
+
+const openB = document.getElementById("openChat");
+openB.addEventListener("click", function(){
+  console.log("temp");
+  var frame = document.createElement("iFrame");
+  frame.style.width = "280px";
+  frame.src="chatOptions.html";
+  frame.className="iFrameClass";
+  frame.id="iFrameID";
+  document.getElementById("div").appendChild(frame);
+  localStorage.setItem("user", JSON.stringify(user));
+  window.addEventListener('message', function(e) {
+  var eventName = e.data[0];
+  var data = e.data[1];
+  switch(eventName) {
+   case 'setHeight':
+   console.log("inside");
+   var height = String(data) + "px";
+   console.log(height);
+   frame.style.height = height;
+   break;
+   case 'close':
+   frame.parentNode.removeChild(frame);
+   break;
+   }
+   // Make the DIV element draggable:
+   dragElement(document.getElementById("iFrameID"));
+
+   function dragElement(elmnt) {
+     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+     if (document.getElementById(elmnt.id)) {
+       // if present, the header is where you move the DIV from:
+       document.getElementById(elmnt.id).onmousedown = dragMouseDown;
+     } else {
+       // otherwise, move the DIV from anywhere inside the DIV:
+       elmnt.onmousedown = dragMouseDown;
+     }
+
+     function dragMouseDown(e) {
+       e = e || window.event;
+       e.preventDefault();
+       // get the mouse cursor position at startup:
+       pos3 = e.clientX;
+       pos4 = e.clientY;
+       document.onmouseup = closeDragElement;
+       // call a function whenever the cursor moves:
+       document.onmousemove = elementDrag;
+     }
+
+     function elementDrag(e) {
+       e = e || window.event;
+       e.preventDefault();
+       // calculate the new cursor position:
+       pos1 = pos3 - e.clientX;
+       pos2 = pos4 - e.clientY;
+       pos3 = e.clientX;
+       pos4 = e.clientY;
+       // set the element's new position:
+       elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+       elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+     }
+
+     function closeDragElement() {
+       // stop moving when mouse button is released:
+       document.onmouseup = null;
+       document.onmousemove = null;
+     }
+   }
+ }, false);
+});

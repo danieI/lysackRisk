@@ -1,0 +1,174 @@
+* {
+
+}
+
+.openChat {
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #8E8E93;
+  padding: 20px;
+  border-radius: 50px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  opacity: 0.8;
+}
+
+.openChat:hover {
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.4s ease 0s;
+  opacity: 1;
+}
+
+.title {
+  font-size: 22px;
+  color: white;
+}
+
+.list {
+  background: linear-gradient(to right, #000000, #8E8E93);
+  max-width: 260px;
+  z-index: 10;
+}
+
+.iFrameClass {
+  z-index: 5;
+  cursor: move;
+  position: absolute;
+  background: linear-gradient(to right, #000000, #949498);
+}
+
+.listObject {
+  background-color: #949498;
+  opacity: 0.8;
+  width:260px;
+  height: 50px;
+  padding-bottom:5%;
+  color: white;
+}
+
+.listObject:hover {
+  background: linear-gradient(to right, #8E8E93, #000000);
+  opacity: 1;
+  transition: all 0.4s ease 0s;
+}
+
+.lastText {
+  text-align:left;
+}
+
+.close {
+  color: white;
+  background-color: #ff6961;
+  opacity: 0.85;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+.send {
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #5eba5e;
+  border-radius: 15px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  opacity: 0.8;
+}
+
+.send:hover {
+  transition: all 0.4s ease 0s;
+  opacity: 1;
+}
+
+.fullChatPage {
+  /* background: linear-gradient(to right, #808080, #d9d9d9, #808080); */
+  background: linear-gradient(to right, #000000, #8E8E93);
+  display: flex;
+  flex-direction: column-reverse;
+  z-index: 10;
+}
+
+::-webkit-scrollbar {
+  background-color: #87878c;
+}
+
+.chatPage {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* display: flex;
+  flex-direction: column-reverse; */
+  vertical-align: top;
+}
+
+.reversal {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.leftTextName {
+  background-color: #8E8E93;
+  border-radius: 7px;
+  width:72%;
+  padding-left:2px;
+  padding-right:2px;
+  padding-top:2px;
+}
+
+.leftOuterDiv{
+  width:100%;
+  padding-right:25%;
+  position:relative;
+  top: 180px;
+}
+
+.rightTextName {
+  background-color: #53d769;
+  border-radius: 7px;
+  text-align: right;
+  width:72%;
+  padding-left:2px;
+  padding-right:2px;
+  padding-top:2px;
+}
+
+.rightOuterDiv{
+  width:100%;
+  padding-left:25%;
+  position:relative;
+  top: 180px;
+}
+
+.rightText {
+  text-align: left;
+  font-size: 12.5px;
+}
+
+.leftText {
+  font-size: 12.5px;
+}
+
+.chatType {
+  font-size: 12.5px;
+}
+
+.sendEnter {
+
+}
+
+.backButton {
+  color: white;
+  background-color: #ff6961;
+  opacity: 0.85;
+  font-size: 12.5px;
+}
+
+.backButton:hover {
+  opacity: 1;
+}

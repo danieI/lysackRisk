@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width">
+      <title>riskChat</title>
+      <link href="madeChatRiskStyle.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+      <div style="width:255px;" class="fullChatPage">
+        <div style="width:245px;height:30px;padding-left:5px;padding-top:2px;padding-right:5px;padding-bottom:2px;" class ="sendEnter">
+          <input style="width:185px;height:25px;border:1px solid white;" placeholder="Click to enter text" autocomplete="off" class="chatType" id="chatMessage"></input>
+          <button style="width:50px;height:25px;" class="send" id="sendChat">Send</button>
+        </div>
+        <div style="width:250px;height:400px;" class="reversal">
+        <div style="width:250px;height:400px;padding-left:5px;padding-top:5px;padding-bottom:5px;" class="chatPage" id="chatPage">
+        </div>
+      </div>
+        <div style="width:250px;height:20px;padding-left:5px;padding-right:5px;" class="back">
+          <button style="width:60px;height:20px" class="backButton" id="backButton">Back</button>
+        </div>
+      </div>
+        <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.5.js"></script>
+        <script src="test.js"></script>
+    </body>
+</html>
