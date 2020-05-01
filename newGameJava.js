@@ -565,10 +565,12 @@ pubnub.addListener({
 
 
 
-
+var badge = document.getElementById("badge");
 const openB = document.getElementById("openChat");
 openB.addEventListener("click", function(){
   openB.style.visibility = "hidden";
+  badge.style.visibility = "hidden";
+  badge.innerText = "0";
   console.log("temp");
   var frame = document.createElement("iFrame");
   frame.style.width = "280px";
@@ -590,6 +592,7 @@ openB.addEventListener("click", function(){
    case 'close':
    frame.parentNode.removeChild(frame);
    openB.style.visibility = "visible";
+   badge.innerText = "0";
    break;
    }
    // Make the DIV element draggable:
