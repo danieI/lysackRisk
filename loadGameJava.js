@@ -805,10 +805,10 @@ async function playerTurn(player){
         addInfo("You gained an infantry card " + player.player);
       } else if (rnd < 0.66666666) {
         player.cards.horse += 1;
-        addInfo("You gained a horse card" + player.player);
+        addInfo("You gained a horse card " + player.player);
       } else {
         player.cards.cannon += 1;
-        addInfo("You gained a cannon card" + player.player)
+        addInfo("You gained a cannon card " + player.player)
       }
     }
   }
@@ -893,7 +893,7 @@ async function turnListener(){
   var tempPlayers = [];
   game.players.forEach(plr => {
     if (!whoOwnsAll.includes(plr.player)){
-      addInfo("Player " + plr.player + " you loose.\nGood luck next time");
+      addInfo("Player " + plr.player + " you lose.\nGood luck next time");
     } else {
       tempPlayers.push(plr);
     }

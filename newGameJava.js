@@ -201,7 +201,7 @@ async function newGame(){
   document.getElementById("playerTurn").innerHTML = "Welcome " + user.name;
   document.getElementById("instructions").style.border = "thin solid black";
   document.getElementById("instructions").style.padding = "3px 3px 3px 3px";
-  addInstructions("Wait untill all players have entered game");
+  addInstructions("Wait until all players have entered game");
   console.log("v start of newGame");
   var firstToLoadText = localStorage.getItem("amITheFirstPlayer");
   console.log(firstToLoad);
