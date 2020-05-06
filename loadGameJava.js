@@ -43,7 +43,7 @@ function cssEffect(countryList, player, bool){
 function saveGame(){
   localStorage.setItem(game.password, JSON.stringify(game));
   pubnub.publish({
-    channel: "pubnub_onboarding_channel",
+    channel: "risk." + String(password),
     message: {"sender": uuid, "content":JSON.stringify(game)}
   }, function(status, response) {
       //handle error

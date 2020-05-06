@@ -44,7 +44,7 @@ function Player(code, player, cannon, horse, infantry, user){
 
 function update(countries, selecting, index){
   pubnub.publish({
-    channel: "pubnub_onboarding_channel",
+    channel: "risk." + String(password),
     message: {"sender": uuid, "content":JSON.stringify({countries:countries,done:done[index], numTroops: numTroops[index], selecting:selecting, index:index})}
   }, function(status, response) {
       //handle error
@@ -319,7 +319,7 @@ function createPlayers(){
           });
         addInfo("Player " + constPlayer.player + " has joined the game")
         pubnub.publish({
-          channel: "pubnub_onboarding_channel",
+          channel: "risk." + String(password),
           message: {"sender": uuid, "content":JSON.stringify({player:playerOne})}
         }, function(status, response) {
             //handle error
@@ -339,7 +339,7 @@ function createPlayers(){
         openB.style.visibility = "visible";
         document.getElementById("doneAdding").removeEventListener("click",doneAdding);
         pubnub.publish({
-          channel: "pubnub_onboarding_channel",
+          channel: "risk." + String(password),
           message: {"sender": uuid, "content":JSON.stringify({data:"doneNewPlayers"})}
         }, function(status, response) {
             //handle error
@@ -499,7 +499,7 @@ function loadGame(){
   localStorage.setItem("riskGameCode", String(password));
   window.open("loadGame.html");
   pubnub.publish({
-    channel: "pubnub_onboarding_channel",
+    channel: "risk." + String(password),
     message: {"sender": uuid, "content":JSON.stringify({data:"openLoadGame"})}
   }, function(status, response) {
       //handle error
