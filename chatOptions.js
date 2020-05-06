@@ -1,6 +1,7 @@
 var users = JSON.parse(localStorage.getItem("users")).users;
 var user = JSON.parse(localStorage.getItem("user"));
 var name;
+var password = localStorage.getItem("riskGameCode");
 
 
 
@@ -21,14 +22,21 @@ users.forEach((u,i) => {
       location.href = "test.html";
       var names = [users[i].id + users[i].name, user.id + user.name];
       names = names.sort();
-      var chan = names[0] + names[1];
+      var chan = "risk." + String(password) + names[0] + names[1];
       localStorage.setItem("riskChatChannel", chan);
     });
   }
 });
 
 document.getElementById("groupChat").addEventListener("click", function(){
-  localStorage.setItem("riskChatChannel", groupChat);
+  var chan = "risk." + String(password) + "groupChat";
+  localStorage.setItem("riskChatChannel", chan);
+  location.href = "test.html";
+});
+
+document.getElementById("turns").addEventListener("click", function(){
+  var chan = "risk." + String(password) + "turns";
+  localStorage.setItem("riskChatChannel", chan);
   location.href = "test.html";
 });
 

@@ -8,6 +8,7 @@ var myTurn = false;
 var constPlayer;
 var inInputBox = false;
 var users = [];
+var password = localStorage.getItem("riskGameCode");
 //Game(password, countries, players, awardHorse, turn){
 //Country(name, whoOwns, troops, adjascent){
 //Player(code, player, cannon, horse, infantry){
@@ -220,7 +221,20 @@ async function playerTurn(player){
     if(freeMoveV > 0){
       summary += " They free moved " + freeMoveV + " troops from " + freeMoveCountry.name + " to " + freeMoveDestination.name + ".";
     }
-    //alert(summary);
+
+    var chan = "risk." + String(password) + "turns";
+
+    pubnub.subscribe({
+      channels: [chan],
+      withPresence: true
+    });
+
+    pubnub.publish({
+      channel: chan,
+      message: {"sender": uuid, "content":summary}
+    }, function(status, response) {
+
+      });
   }
   async function placeReinforcements(reinforcements, countries, attackingCountry, freeMove) {//if attackingCountry == false then in turn start reinforcements
     return new Promise(resolve => {
@@ -887,13 +901,18 @@ async function turnListener(){
   });
 
   if (winner != false){
-    //load winner page
+    alert(winner + "wins the game! congratulations");
+    window.close();
     addInstructions(winner + " Wins!!");
   }
   var tempPlayers = [];
   game.players.forEach(plr => {
     if (!whoOwnsAll.includes(plr.player)){
       addInfo("Player " + plr.player + " you lose.\nGood luck next time");
+      if(plr.code = uuid){
+        alert("You loose...");
+        window.close();
+      }
     } else {
       tempPlayers.push(plr);
     }
@@ -965,7 +984,7 @@ async function loadGame(){
       .then((testBlah) => playerTurn(game.players[game.turn % game.players.length]));
   }
 
-  var code = localStorage.getItem("riskLoadGameCode");
+  var code = localStorage.getItem("riskGameCode");
   pubnub.getSpace({spaceId:code})
     .then(response => {
       game = JSON.parse(response.data.custom.data);
@@ -1009,9 +1028,10 @@ window.addEventListener("beforeunload", function(e){
   });
 
   pubnub.subscribe({
-    channels: ['pubnub_onboarding_channel'],
+    channels: ['risk.' + String(password)],
     withPresence: true
   });
+
 
   pubnub.addListener({
     message: function(event) {

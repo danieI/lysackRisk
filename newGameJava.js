@@ -1,4 +1,4 @@
-const password = localStorage.getItem("riskNewGameCode");
+const password = localStorage.getItem("riskGameCode");
 var players = [];
 var constPlayer;
 var potentialPlayers = ["yellow", "green", "blue", "red", "white", "purple"];
@@ -496,7 +496,7 @@ function createCountries(players){
 
 
 function loadGame(){
-  localStorage.setItem("riskLoadGameCode", String(password));
+  localStorage.setItem("riskGameCode", String(password));
   window.open("loadGame.html");
   pubnub.publish({
     channel: "pubnub_onboarding_channel",
@@ -523,7 +523,7 @@ const pubnub = new PubNub({
 });
 
 pubnub.subscribe({
-  channels: ['pubnub_onboarding_channel'],
+  channels: ['risk.' + String(password)],
   withPresence: true
 });
 
@@ -554,7 +554,7 @@ pubnub.addListener({
       // document.getElementById("gameCode").innerHTML = "Game code: " + password;
       addInfo("Player " + players[players.length - 1].player + " has joined the game");
     } else if(JSON.parse(event.message.content).data == "openLoadGame" && event.message.sender != uuid){
-      localStorage.setItem("riskLoadGameCode", String(password));
+      localStorage.setItem("riskGameCode", String(password));
       window.open("loadGame.html");
       setTimeout(() => window.close(), 500);
     }

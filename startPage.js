@@ -13,7 +13,7 @@ window.onload = function(){
     function createGameSpace(){
       pubnub.createSpace({id: code, name:"risk", custom:{data:JSON.stringify({potentialPlayers:["yellow", "green", "blue", "red","white","purple"]})}, include:{customFields: true}})
         .then(response => {
-          localStorage.setItem("riskNewGameCode", String(code));
+          localStorage.setItem("riskGameCode", String(code));
           localStorage.setItem("amITheFirstPlayer", "yes");
           window.open("newGame.html");
         });
@@ -49,7 +49,7 @@ window.onload = function(){
       });
       pubnub.getSpace({spaceId:code})
         .then(response => {
-          localStorage.setItem("riskNewGameCode", code);
+          localStorage.setItem("riskGameCode", code);
           window.open("newGame.html");
         })
         .catch(response => {
@@ -68,7 +68,7 @@ window.onload = function(){
       });
       pubnub.getSpace({spaceId:code})
         .then(response => {
-          localStorage.setItem("riskLoadGameCode", code);
+          localStorage.setItem("riskGameCode", code);
           window.open("loadGame.html");      })
         .catch(response => {
           document.getElementById("info").innerHTML = "Game code does not exist";
